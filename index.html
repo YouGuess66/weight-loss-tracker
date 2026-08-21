@@ -3,219 +3,460 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#F2F6F4">
   <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%23000000'/%3E%3Ctext x='90' y='115' font-size='100' text-anchor='middle'%3E🥗%3C/text%3E%3C/svg%3E">
-  <title>瘦身记 - 减肥记录</title>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%2334C759'/%3E%3Ctext x='90' y='120' font-size='100' text-anchor='middle'%3E🥗%3C/text%3E%3C/svg%3E">
+  <title>瘦身记</title>
   <style>
     :root {
-      --primary: #30D158;
-      --primary-dark: #248A3D;
-      --danger: #FF453A;
-      --warn: #FF9F0A;
-      --bg: #000000;
-      --card: rgba(255,255,255,0.12);
-      --card-solid: rgba(30,30,30,0.85);
-      --text: #ffffff;
-      --text-light: rgba(255,255,255,0.6);
-      --border: rgba(255,255,255,0.12);
-      --glass-border: rgba(255,255,255,0.18);
-      --glass-highlight: rgba(255,255,255,0.25);
+      --primary: #34C759;
+      --primary-light: #E8F9ED;
+      --primary-soft: rgba(52,199,89,0.12);
+      --danger: #FF3B30;
+      --warn: #FF9500;
+      --blue: #007AFF;
+      --purple: #AF52DE;
+      --bg: #F2F6F4;
+      --card: rgba(255,255,255,0.72);
+      --card-solid: #FFFFFF;
+      --text: #1C1C1E;
+      --text-secondary: #8E8E93;
+      --text-tertiary: #C7C7CC;
+      --border: rgba(120,120,128,0.12);
+      --glass-border: rgba(255,255,255,0.55);
+      --glass-highlight: rgba(255,255,255,0.85);
+      --shadow: 0 10px 40px -12px rgba(0,0,0,0.08), 0 4px 12px -4px rgba(0,0,0,0.04);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "PingFang SC", "Microsoft YaHei", sans-serif;
       background: var(--bg);
       color: var(--text);
-      line-height: 1.5;
-      padding-bottom: 80px;
+      line-height: 1.45;
+      padding-bottom: calc(90px + env(safe-area-inset-bottom));
       min-height: 100vh;
-      position: relative;
+      -webkit-font-smoothing: antialiased;
     }
     body::before {
       content: '';
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
+      top: 0; left: 0; right: 0; bottom: 0;
       background:
-        radial-gradient(ellipse 80% 50% at 20% 30%, rgba(48,209,88,0.25) 0%, transparent 50%),
-        radial-gradient(ellipse 60% 40% at 80% 20%, rgba(10,132,255,0.18) 0%, transparent 45%),
-        radial-gradient(ellipse 70% 60% at 50% 80%, rgba(175,82,222,0.12) 0%, transparent 50%),
-        radial-gradient(ellipse 50% 50% at 70% 60%, rgba(255,159,10,0.08) 0%, transparent 40%);
+        radial-gradient(ellipse 90% 60% at 10% 5%, rgba(52,199,89,0.12) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 50% at 90% 15%, rgba(0,122,255,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 80% 55% at 50% 95%, rgba(175,82,222,0.06) 0%, transparent 50%);
       z-index: -1;
       pointer-events: none;
     }
+
+    /* 顶部导航 */
     .app-header {
-      background: rgba(0,0,0,0.3);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
-      border-bottom: 1px solid var(--glass-border);
-      color: #fff;
-      padding: calc(24px + env(safe-area-inset-top)) 16px 16px;
-      text-align: center;
       position: sticky;
       top: 0;
       z-index: 100;
-    }
-    .app-header h1 { font-size: 22px; font-weight: 600; }
-    .date-nav {
+      background: rgba(242,246,244,0.78);
+      backdrop-filter: blur(24px) saturate(180%);
+      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      border-bottom: 1px solid var(--border);
+      padding: calc(12px + env(safe-area-inset-top)) 16px 12px;
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 16px;
-      margin-top: 12px;
-      font-size: 15px;
-      font-weight: 500;
+      justify-content: space-between;
     }
-    .date-nav button {
-      background: rgba(255,255,255,0.1);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid var(--glass-border);
-      color: #fff;
-      width: 36px;
-      height: 36px;
+    .header-user {
+      width: 38px; height: 38px;
       border-radius: 50%;
-      font-size: 18px;
-      cursor: pointer;
-      transition: all 0.2s;
+      background: linear-gradient(135deg, #34C759 0%, #248A3D 100%);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 14px; font-weight: 600;
+      border: 2px solid rgba(255,255,255,0.6);
+      box-shadow: 0 2px 8px rgba(52,199,89,0.25);
     }
-    .date-nav button:active { background: rgba(255,255,255,0.2); transform: scale(0.92); }
-    .summary-cards {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      padding: 16px;
-    }
-    .card {
-      background: var(--card);
-      backdrop-filter: blur(20px) saturate(160%);
-      -webkit-backdrop-filter: blur(20px) saturate(160%);
-      border: 1px solid var(--glass-border);
+    .header-search {
+      flex: 1;
+      margin: 0 12px;
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 16px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.2), inset 0 1px 0 var(--glass-highlight);
-    }
-    .card.full { grid-column: 1 / -1; }
-    .card-title {
-      font-size: 13px;
-      color: var(--text-light);
-      margin-bottom: 6px;
-      letter-spacing: 0.3px;
-    }
-    .card-value {
-      font-size: 26px;
-      font-weight: 700;
-      color: var(--text);
-    }
-    .card-unit {
-      font-size: 13px;
-      color: var(--text-light);
-      margin-left: 4px;
-      font-weight: 500;
-    }
-    .card-sub {
-      font-size: 12px;
-      color: var(--text-light);
-      margin-top: 6px;
-      line-height: 1.5;
-    }
-    .positive { color: #30D158; text-shadow: 0 0 10px rgba(48,209,88,0.3); }
-    .negative { color: #FF453A; text-shadow: 0 0 10px rgba(255,69,58,0.25); }
-    .empty-state { color: var(--text-light); }
-    .section {
-      background: var(--card);
-      backdrop-filter: blur(20px) saturate(160%);
-      -webkit-backdrop-filter: blur(20px) saturate(160%);
-      border: 1px solid var(--glass-border);
-      margin: 0 16px 16px;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.15), inset 0 1px 0 var(--glass-highlight);
-    }
-    .section-header {
+      padding: 9px 14px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 16px;
-      border-bottom: 1px solid var(--border);
-    }
-    .section-title {
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--text);
-    }
-    .section-total {
+      gap: 8px;
+      color: var(--text-secondary);
       font-size: 14px;
-      color: var(--text-light);
-      font-weight: 500;
     }
-    .meal-list { padding: 0 16px; }
-    .meal-item {
+    .header-icon {
+      width: 38px; height: 38px;
+      border-radius: 12px;
+      background: rgba(255,255,255,0.65);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      position: relative;
+    }
+    .badge {
+      position: absolute;
+      top: -3px; right: -3px;
+      min-width: 18px; height: 18px;
+      background: var(--danger);
+      color: #fff;
+      border-radius: 9px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 5px;
+      border: 2px solid var(--bg);
+    }
+
+    /* 玻璃卡片 */
+    .glass-card {
+      background: var(--card);
+      backdrop-filter: blur(22px) saturate(170%);
+      -webkit-backdrop-filter: blur(22px) saturate(170%);
+      border: 1px solid var(--glass-border);
+      border-radius: 24px;
+      box-shadow: var(--shadow), inset 0 1px 0 var(--glass-highlight);
+      overflow: hidden;
+    }
+    .section-pad { padding: 16px; }
+
+    /* 首页热量大卡 */
+    .hero-card {
+      margin: 12px 16px 0;
+      padding: 20px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hero-left {}
+    .hero-label {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 6px;
+    }
+    .hero-value {
+      font-size: 44px;
+      font-weight: 800;
+      color: var(--text);
+      letter-spacing: -1px;
+    }
+    .hero-unit {
+      font-size: 16px;
+      color: var(--text-secondary);
+      font-weight: 500;
+      margin-left: 4px;
+    }
+    .hero-sub {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      background: rgba(255,255,255,0.5);
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 12px;
+    }
+    .hero-right {
+      width: 100px; height: 100px;
+      position: relative;
+    }
+    .hero-ring {
+      width: 100px; height: 100px;
+      transform: rotate(-90deg);
+    }
+    .hero-ring-bg { fill: none; stroke: rgba(120,120,128,0.12); stroke-width: 9; }
+    .hero-ring-fill { fill: none; stroke: var(--primary); stroke-width: 9; stroke-linecap: round; transition: stroke-dashoffset 0.6s ease; }
+    .hero-ring-text {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+    }
+    .hero-ring-num { font-size: 20px; font-weight: 800; color: var(--text); }
+    .hero-ring-label { font-size: 10px; color: var(--text-secondary); margin-top: 2px; }
+
+    /* 小数据标签 */
+    .hero-tags {
+      display: flex;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .hero-tag {
+      flex: 1;
+      background: rgba(255,255,255,0.55);
+      backdrop-filter: blur(8px);
+      border-radius: 16px;
+      padding: 10px;
+      text-align: center;
+      border: 1px solid rgba(255,255,255,0.5);
+    }
+    .hero-tag-val { font-size: 18px; font-weight: 700; color: var(--text); }
+    .hero-tag-val.intake { color: var(--primary); }
+    .hero-tag-val.burn { color: var(--warn); }
+    .hero-tag-label { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+
+    /* 图标入口 */
+    .quick-actions {
+      margin: 14px 16px 0;
+      padding: 18px 12px;
       display: flex;
       justify-content: space-between;
-      align-items: center;
-      padding: 14px 0;
-      border-bottom: 1px solid var(--border);
     }
-    .meal-item:last-child { border-bottom: none; }
-    .meal-info { flex: 1; }
-    .meal-name { font-size: 15px; font-weight: 500; color: var(--text); }
-    .meal-detail { font-size: 12px; color: var(--text-light); margin-top: 2px; }
-    .meal-cal { font-size: 16px; font-weight: 600; color: var(--text); }
-    .btn-add {
+    .quick-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .quick-item:active { transform: scale(0.92); }
+    .quick-icon {
+      width: 54px; height: 54px;
+      border-radius: 18px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 26px;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    }
+    .quick-icon.breakfast { background: linear-gradient(135deg, rgba(255,204,0,0.14), rgba(255,204,0,0.06)); }
+    .quick-icon.lunch { background: linear-gradient(135deg, rgba(52,199,89,0.14), rgba(52,199,89,0.06)); }
+    .quick-icon.dinner { background: linear-gradient(135deg, rgba(0,122,255,0.14), rgba(0,122,255,0.06)); }
+    .quick-icon.snack { background: linear-gradient(135deg, rgba(175,82,222,0.14), rgba(175,82,222,0.06)); }
+    .quick-icon.exercise { background: linear-gradient(135deg, rgba(255,149,0,0.14), rgba(255,149,0,0.06)); }
+    .quick-label { font-size: 12px; color: var(--text-secondary); font-weight: 500; }
+
+    /* 拍照条 */
+    .camera-bar {
+      margin: 14px 16px 0;
+      padding: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 6px;
-      width: calc(100% - 32px);
-      margin: 12px 16px 16px;
-      padding: 12px;
-      border: 1px solid var(--glass-border);
-      border-radius: 14px;
-      background: rgba(48,209,88,0.15);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      gap: 8px;
       color: var(--primary);
       font-size: 15px;
       font-weight: 600;
       cursor: pointer;
+      background: linear-gradient(135deg, rgba(52,199,89,0.12), rgba(52,199,89,0.04));
+    }
+    .camera-bar:active { transform: scale(0.98); }
+
+    /* 记录卡片 */
+    .record-card {
+      margin: 14px 16px 0;
+    }
+    .record-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 16px 10px;
+    }
+    .record-title-wrap {}
+    .record-title { font-size: 18px; font-weight: 700; color: var(--text); }
+    .record-time { font-size: 12px; color: var(--text-secondary); margin-top: 4px; }
+    .record-actions { display: flex; gap: 10px; align-items: center; }
+    .record-btn {
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      color: var(--primary);
+      cursor: pointer;
+    }
+    .record-body {
+      padding: 0 16px 16px;
+    }
+    .weight-main {
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+    .weight-value { font-size: 32px; font-weight: 800; color: var(--text); }
+    .weight-unit { font-size: 14px; color: var(--text-secondary); }
+    .weight-chart-mini {
+      margin-top: 12px;
+      height: 40px;
+    }
+    .exercise-stats {
+      display: flex;
+      gap: 30px;
+      margin-top: 4px;
+    }
+    .exercise-stat {}
+    .exercise-stat-label { font-size: 12px; color: var(--text-secondary); }
+    .exercise-stat-value { font-size: 22px; font-weight: 700; color: var(--text); margin-top: 2px; }
+    .exercise-stat-value span { font-size: 13px; color: var(--text-secondary); font-weight: 500; margin-left: 2px; }
+    .mini-bar-chart {
+      display: flex;
+      align-items: flex-end;
+      gap: 6px;
+      height: 50px;
+      margin-top: 14px;
+    }
+    .mini-bar {
+      flex: 1;
+      background: var(--text-tertiary);
+      border-radius: 4px 4px 0 0;
+      opacity: 0.35;
+      min-height: 4px;
+    }
+    .mini-bar.active { background: var(--primary); opacity: 1; }
+
+    /* 底部双卡片 */
+    .dual-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin: 14px 16px 0;
+    }
+    .dual-card {
+      padding: 14px;
+      min-height: 130px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .dual-title { font-size: 16px; font-weight: 700; color: var(--text); }
+    .dual-value { font-size: 22px; font-weight: 800; color: var(--text); }
+    .dual-value span { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+    .dual-icon {
+      align-self: flex-end;
+      font-size: 36px;
+      opacity: 0.9;
+    }
+
+    /* 底部导航 */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0; right: 0;
+      background: rgba(255,255,255,0.82);
+      backdrop-filter: blur(28px) saturate(180%);
+      -webkit-backdrop-filter: blur(28px) saturate(180%);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+      z-index: 90;
+    }
+    .nav-item {
+      flex: 1;
+      text-align: center;
+      padding: 6px;
+      font-size: 11px;
+      color: var(--text-secondary);
+      cursor: pointer;
       transition: all 0.2s;
     }
-    .btn-add:active { transform: scale(0.98); background: rgba(48,209,88,0.25); }
-    .btn-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(255,69,58,0.15);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      color: var(--danger);
-      font-size: 18px;
-      cursor: pointer;
-      margin-left: 8px;
+    .nav-item.active { color: var(--primary); transform: translateY(-1px); }
+    .nav-icon { font-size: 24px; display: block; margin-bottom: 2px; }
+    .fab-wrap {
+      position: fixed;
+      bottom: calc(24px + env(safe-area-inset-bottom));
+      right: 16px;
+      z-index: 95;
     }
+    .fab {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 0%, #248A3D 100%);
+      color: #fff;
+      border: none;
+      font-size: 32px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 6px 20px rgba(52,199,89,0.35);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .fab:active { transform: scale(0.92); }
+
+    /* 页面 */
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* 子页面头部 */
+    .sub-header {
+      padding: calc(16px + env(safe-area-inset-top)) 16px 16px;
+      background: rgba(242,246,244,0.78);
+      backdrop-filter: blur(24px);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .sub-header h1 { font-size: 20px; font-weight: 700; flex: 1; text-align: center; }
+    .back-btn { font-size: 22px; color: var(--text-secondary); cursor: pointer; }
+
+    /* 趋势页 */
+    .chart-card {
+      margin: 14px 16px 0;
+      padding: 16px;
+    }
+    .chart-container { height: 200px; position: relative; }
+    .chart-svg { width: 100%; height: 100%; }
+
+    /* 我的页 */
+    .profile-header {
+      padding: calc(20px + env(safe-area-inset-top)) 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .profile-avatar {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary) 0%, #248A3D 100%);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 28px;
+      border: 3px solid rgba(255,255,255,0.7);
+      box-shadow: 0 4px 14px rgba(52,199,89,0.25);
+    }
+    .profile-name { font-size: 20px; font-weight: 700; }
+    .profile-meta { font-size: 13px; color: var(--text-secondary); margin-top: 4px; }
+    .settings-list { padding: 0 16px; }
+    .settings-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .settings-item:last-child { border-bottom: none; }
+    .settings-label { font-size: 15px; }
+    .settings-value { font-size: 14px; color: var(--text-secondary); }
+    .danger-btn {
+      background: rgba(255,59,48,0.08);
+      color: var(--danger);
+      border: 1px solid rgba(255,59,48,0.2);
+      width: calc(100% - 32px);
+      margin: 16px;
+      padding: 13px;
+      border-radius: 16px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    /* 弹窗 */
     .modal {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
       z-index: 200;
       align-items: flex-end;
       justify-content: center;
     }
     .modal.show { display: flex; }
     .modal-content {
-      background: rgba(28,28,30,0.82);
+      background: rgba(255,255,255,0.92);
       backdrop-filter: blur(36px) saturate(180%);
       -webkit-backdrop-filter: blur(36px) saturate(180%);
       border: 1px solid var(--glass-border);
@@ -227,74 +468,43 @@
       padding: 20px;
       overflow-y: auto;
       animation: slideUp 0.25s ease-out;
-      box-shadow: 0 -10px 40px rgba(0,0,0,0.4), inset 0 1px 0 var(--glass-highlight);
+      box-shadow: 0 -10px 40px rgba(0,0,0,0.12);
     }
     @keyframes slideUp {
       from { transform: translateY(100%); }
       to { transform: translateY(0); }
     }
     .modal-title {
-      font-size: 18px;
-      font-weight: 600;
+      font-size: 18px; font-weight: 700;
       margin-bottom: 16px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      display: flex; justify-content: space-between; align-items: center;
     }
-    .modal-close {
-      background: none;
-      border: none;
-      font-size: 24px;
-      color: var(--text-light);
-      cursor: pointer;
-    }
+    .modal-close { background: none; border: none; font-size: 24px; color: var(--text-secondary); cursor: pointer; }
     .form-group { margin-bottom: 16px; }
-    .form-label {
-      display: block;
-      font-size: 14px;
-      color: var(--text-light);
-      margin-bottom: 6px;
-    }
+    .form-label { display: block; font-size: 13px; color: var(--text-secondary); margin-bottom: 6px; font-weight: 500; }
     .form-input, .form-select {
       width: 100%;
-      padding: 12px;
-      border: 1px solid var(--glass-border);
+      padding: 13px;
+      border: 1px solid var(--border);
       border-radius: 14px;
       font-size: 15px;
-      background: rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.7);
       color: var(--text);
       outline: none;
-      transition: all 0.2s;
     }
-    .form-input:focus, .form-select:focus {
-      border-color: var(--primary);
-      background: rgba(255,255,255,0.12);
-      box-shadow: 0 0 0 3px rgba(48,209,88,0.15);
-    }
-    .form-input::placeholder { color: rgba(255,255,255,0.35); }
-    .form-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
+    .form-input:focus, .form-select:focus { border-color: var(--primary); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
     .btn-primary {
       width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, rgba(48,209,88,0.9) 0%, rgba(36,138,61,0.9) 100%);
+      padding: 15px;
+      background: var(--primary);
       color: #fff;
       border: none;
-      border-radius: 14px;
+      border-radius: 16px;
       font-size: 16px;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
-      margin-top: 8px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 4px 16px rgba(48,209,88,0.3), inset 0 1px 0 rgba(255,255,255,0.25);
-      transition: all 0.2s;
     }
-    .btn-primary:active { transform: scale(0.98); box-shadow: 0 2px 10px rgba(48,209,88,0.25); }
-    .btn-primary:disabled { opacity: 0.6; }
     .food-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -303,482 +513,379 @@
     }
     .food-chip {
       padding: 12px 6px;
-      border: 1px solid var(--glass-border);
+      border: 1px solid var(--border);
       border-radius: 14px;
       text-align: center;
       font-size: 13px;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+      background: rgba(255,255,255,0.6);
       color: var(--text);
       cursor: pointer;
-      transition: all 0.15s;
     }
-    .food-chip:active { transform: scale(0.95); background: rgba(48,209,88,0.2); border-color: var(--primary); }
-    .food-chip .cal { font-size: 11px; color: var(--text-light); display: block; margin-top: 2px; }
-    .empty-state {
-      text-align: center;
-      padding: 24px;
-      color: var(--text-light);
-      font-size: 14px;
-    }
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 16px;
-      right: 16px;
-      background: rgba(28,28,30,0.72);
-      backdrop-filter: blur(28px) saturate(180%);
-      -webkit-backdrop-filter: blur(28px) saturate(180%);
-      border: 1px solid var(--glass-border);
-      border-radius: 24px;
-      display: flex;
-      justify-content: space-around;
-      padding: 10px 0 calc(10px + env(safe-area-inset-bottom));
-      margin-bottom: 8px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 var(--glass-highlight);
-      z-index: 90;
-    }
-    .nav-item {
-      flex: 1;
-      text-align: center;
-      padding: 6px;
-      font-size: 11px;
-      color: var(--text-light);
+    .food-chip .cal { font-size: 11px; color: var(--text-secondary); display: block; margin-top: 2px; }
+    .btn-add {
+      display: flex; align-items: center; justify-content: center;
+      gap: 6px;
+      width: 100%;
+      padding: 13px;
+      border: 1px dashed var(--primary);
+      border-radius: 14px;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-size: 15px;
+      font-weight: 600;
       cursor: pointer;
-      transition: all 0.2s;
     }
-    .nav-item.active { color: var(--primary); transform: translateY(-2px); }
-    .nav-icon { font-size: 22px; display: block; margin-bottom: 3px; }
-    .page { display: none; }
-    .page.active { display: block; }
-    .chart-container {
-      height: 220px;
-      padding: 16px;
-      position: relative;
-    }
-    .chart-svg { width: 100%; height: 100%; }
-    .settings-list { padding: 0 16px; }
-    .settings-item {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 16px 0;
+    .meal-list {}
+    .meal-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 13px 16px;
       border-bottom: 1px solid var(--border);
     }
-    .settings-item:last-child { border-bottom: none; }
-    .settings-label { font-size: 15px; }
-    .settings-value { font-size: 14px; color: var(--text-light); }
-    .danger-btn {
-      background: rgba(255,69,58,0.08);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
+    .meal-item:last-child { border-bottom: none; }
+    .meal-info { flex: 1; }
+    .meal-name { font-size: 15px; font-weight: 600; }
+    .meal-detail { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+    .meal-cal { font-size: 16px; font-weight: 700; color: var(--text); }
+    .btn-icon {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,59,48,0.1);
       color: var(--danger);
-      border: 1px solid rgba(255,69,58,0.3);
-      width: calc(100% - 32px);
-      margin: 16px;
-      padding: 12px;
-      border-radius: 14px;
-      font-size: 15px;
+      font-size: 16px;
       cursor: pointer;
-      transition: all 0.2s;
-    }
-    .danger-btn:active { background: rgba(255,69,58,0.15); transform: scale(0.98); }
-    .progress-ring {
-      width: 120px;
-      height: 120px;
-      margin: 0 auto;
-    }
-    .progress-ring-bg { fill: none; stroke: rgba(255,255,255,0.12); stroke-width: 10; }
-    .progress-ring-fill { fill: none; stroke: var(--primary); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 0.5s; filter: drop-shadow(0 0 6px rgba(48,209,88,0.4)); }
-    .progress-text {
-      text-anchor: middle;
-      dominant-baseline: middle;
-      font-size: 22px;
-      font-weight: 700;
-      fill: var(--text);
-    }
-    .progress-label {
-      text-anchor: middle;
-      dominant-baseline: middle;
-      font-size: 11px;
-      fill: var(--text-light);
+      margin-left: 8px;
     }
     .tag {
       display: inline-block;
-      padding: 2px 8px;
-      border-radius: 12px;
-      font-size: 12px;
-      margin-left: 8px;
+      padding: 2px 7px;
+      border-radius: 10px;
+      font-size: 11px;
+      margin-left: 6px;
+      font-weight: 600;
     }
-    .tag.breakfast { background: #FFF3E0; color: #E65100; }
+    .tag.breakfast { background: #FFF8E1; color: #F57F17; }
     .tag.lunch { background: #E8F5E9; color: #2E7D32; }
     .tag.dinner { background: #E3F2FD; color: #1565C0; }
     .tag.snack { background: #F3E5F5; color: #6A1B9A; }
-    .tag.exercise { background: #FFEBEE; color: #C62828; }
+    .tag.exercise { background: #FFF3E0; color: #E65100; }
 
-    /* 运动快捷选择网格 */
-    .exercise-category-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text-light);
-      margin: 12px 0 8px;
-      padding-left: 4px;
-    }
-    .exercise-favorite-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
+    /* 运动快捷选择 */
+    .exercise-category-title { font-size: 13px; font-weight: 700; color: var(--text-secondary); margin: 14px 0 8px; }
+    .exercise-favorite-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
     .exercise-favorite-chip {
       position: relative;
-      border: 1px solid var(--glass-border);
+      border: 1px solid var(--border);
       border-radius: 14px;
-      padding: 12px 8px;
+      padding: 12px 6px;
       text-align: center;
+      background: rgba(255,255,255,0.55);
       cursor: pointer;
-      background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      transition: all 0.15s;
     }
-    .exercise-favorite-chip.selected {
-      border-color: var(--primary);
-      background: rgba(48,209,88,0.18);
-      box-shadow: 0 0 16px rgba(48,209,88,0.2);
-    }
-    .exercise-favorite-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .exercise-favorite-cal {
-      font-size: 11px;
-      color: var(--text-light);
-      margin-top: 4px;
-    }
-    .exercise-favorite-tag {
-      font-size: 10px;
-      color: var(--primary);
-      margin-top: 4px;
-    }
-    .exercise-favorite-check {
-      position: absolute;
-      top: 4px;
-      right: 6px;
-      font-size: 14px;
-      color: var(--primary);
-      font-weight: 700;
-    }
-    .exercise-favorite-delete {
-      position: absolute;
-      top: 4px;
-      left: 6px;
-      font-size: 12px;
-      color: var(--danger);
-      font-weight: 700;
-      width: 20px;
-      height: 20px;
-      line-height: 20px;
-      border-radius: 50%;
-      background: rgba(0,0,0,0.4);
-      border: 1px solid rgba(255,69,58,0.4);
-    }
-    .hidden-exercise-section {
-      margin-top: 8px;
-      padding-top: 12px;
-      border-top: 1px dashed var(--glass-border);
-    }
-    .hidden-exercise-title {
-      font-size: 13px;
-      color: var(--text-light);
-      margin-bottom: 10px;
-    }
-    .hidden-exercise-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-    .hidden-exercise-chip {
-      border: 1px dashed var(--glass-border);
-      border-radius: 14px;
-      padding: 12px 8px;
-      text-align: center;
-      cursor: pointer;
-      background: rgba(255,255,255,0.05);
-      opacity: 0.8;
-    }
-    .hidden-exercise-chip .name {
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text);
-    }
-    .hidden-exercise-chip .restore {
-      font-size: 11px;
-      color: var(--primary);
-      margin-top: 4px;
-    }
+    .exercise-favorite-chip.selected { border-color: var(--primary); background: var(--primary-light); }
+    .exercise-favorite-name { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .exercise-favorite-cal { font-size: 10px; color: var(--text-secondary); margin-top: 3px; }
+    .exercise-favorite-check { position: absolute; top: 4px; right: 6px; font-size: 13px; color: var(--primary); font-weight: 700; }
+    .exercise-favorite-delete { position: absolute; top: 4px; left: 6px; font-size: 11px; color: var(--danger); }
+    .hidden-exercise-section { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+    .hidden-exercise-title { font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+    .hidden-exercise-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .hidden-exercise-chip { border: 1px dashed var(--border); border-radius: 14px; padding: 10px 6px; text-align: center; background: rgba(255,255,255,0.35); cursor: pointer; }
 
-    /* 日历样式 */
-    .calendar-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--text);
-    }
-    .calendar-header button {
-      background: rgba(255,255,255,0.1);
-      border: 1px solid var(--glass-border);
-      color: var(--text);
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      font-size: 18px;
-      cursor: pointer;
-    }
-    .calendar-weekdays {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      text-align: center;
-      font-size: 13px;
-      color: var(--text-light);
-      margin-bottom: 8px;
-    }
-    .calendar-days {
-      display: grid;
-      grid-template-columns: repeat(7, 1fr);
-      gap: 6px;
-      margin-bottom: 16px;
-    }
+    /* 日历 */
+    .calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 16px; font-weight: 700; }
+    .calendar-header button { background: rgba(255,255,255,0.6); border: 1px solid var(--border); width: 32px; height: 32px; border-radius: 50%; font-size: 18px; cursor: pointer; }
+    .calendar-weekdays { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; }
+    .calendar-days { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 16px; }
     .calendar-day {
       aspect-ratio: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      border-radius: 12px;
-      font-size: 14px;
-      cursor: pointer;
-      position: relative;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid transparent;
-      color: var(--text);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      border-radius: 12px; font-size: 14px; cursor: pointer;
+      background: rgba(255,255,255,0.5); color: var(--text);
     }
-    .calendar-day.empty { background: transparent; cursor: default; border: none; }
-    .calendar-day.today { border-color: var(--primary); font-weight: 700; }
-    .calendar-day.selected { background: var(--primary); color: #fff; border-color: var(--primary); }
-    .calendar-day.has-data:not(.selected) { background: rgba(48,209,88,0.18); color: var(--primary); font-weight: 600; }
-    .calendar-day .data-dot {
-      width: 5px;
-      height: 5px;
-      border-radius: 50%;
-      background: currentColor;
-      margin-top: 3px;
-      opacity: .7;
-    }
+    .calendar-day.empty { background: transparent; cursor: default; }
+    .calendar-day.today { border: 2px solid var(--primary); font-weight: 700; }
+    .calendar-day.selected { background: var(--primary); color: #fff; }
+    .calendar-day.has-data:not(.selected) { background: var(--primary-light); color: var(--primary); font-weight: 700; }
+    .calendar-day .data-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; margin-top: 3px; }
+
+    .empty-state { text-align: center; padding: 24px; color: var(--text-secondary); font-size: 14px; }
   </style>
 </head>
 <body>
+  <!-- 首页 -->
   <div id="page-home" class="page active">
     <header class="app-header">
-      <h1>瘦身记</h1>
-      <div class="date-nav">
-        <button onclick="changeDate(-1)">‹</button>
-        <span id="currentDate" onclick="openCalendarModal()" style="cursor:pointer;text-decoration:underline;text-underline-offset:4px;">今天</span>
-        <button onclick="changeDate(1)">›</button>
+      <div class="header-user">AI</div>
+      <div class="header-search">
+        <span>🔍</span>
+        <span id="currentDate" onclick="openCalendarModal()" style="cursor:pointer;">今天</span>
       </div>
+      <div class="header-icon">📷</div>
+      <div class="header-icon">✉️</div>
     </header>
 
-    <div class="summary-cards">
-      <div class="card full">
-        <div style="display:flex;align-items:center;justify-content:space-between;">
-          <div>
-            <div class="card-title">今日热量缺口</div>
-            <div class="card-value"><span id="deficitValue">0</span><span class="card-unit">kcal</span></div>
-            <div class="card-sub" id="deficitText">摄入 - 消耗 - 基础代谢</div>
+    <!-- 热量大卡 -->
+    <div class="glass-card hero-card">
+      <div class="hero-left">
+        <div class="hero-label">还可吃</div>
+        <div class="hero-value"><span id="remainValue">0</span><span class="hero-unit">千卡</span></div>
+        <div class="hero-sub" id="deficitSub">今日热量缺口 0 kcal</div>
+        <div class="hero-tags">
+          <div class="hero-tag">
+            <div class="hero-tag-val intake" id="intakeValue">0</div>
+            <div class="hero-tag-label">饮食</div>
           </div>
-          <svg class="progress-ring" viewBox="0 0 120 120">
-            <circle class="progress-ring-bg" cx="60" cy="60" r="50"/>
-            <circle id="progressCircle" class="progress-ring-fill" cx="60" cy="60" r="50" stroke-dasharray="314" stroke-dashoffset="314"/>
-            <text id="progressText" class="progress-text" x="60" y="55">0%</text>
-            <text class="progress-label" x="60" y="75">目标完成</text>
-          </svg>
+          <div class="hero-tag">
+            <div class="hero-tag-val burn" id="burnValue">0</div>
+            <div class="hero-tag-label">运动</div>
+          </div>
         </div>
       </div>
-      <div class="card">
-        <div class="card-title">摄入热量</div>
-        <div class="card-value"><span id="intakeValue">0</span><span class="card-unit">kcal</span></div>
-      </div>
-      <div class="card">
-        <div class="card-title">消耗热量</div>
-        <div class="card-value"><span id="burnValue">0</span><span class="card-unit">kcal</span></div>
-      </div>
-      <div class="card">
-        <div class="card-title">基础代谢</div>
-        <div class="card-value"><span id="bmrValue">0</span><span class="card-unit">kcal</span></div>
-      </div>
-      <div class="card">
-        <div class="card-title">今日体重</div>
-        <div class="card-value"><span id="todayWeight">--</span><span class="card-unit">kg</span></div>
-      </div>
-    </div>
-
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">饮食记录</span>
-        <span class="section-total" id="mealTotal">0 kcal</span>
-      </div>
-      <div class="meal-list" id="mealList"></div>
-      <button class="btn-add" onclick="openFoodModal()">+ 记录饮食</button>
-    </div>
-
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">运动记录</span>
-        <span class="section-total" id="exerciseTotal">0 kcal</span>
-      </div>
-      <div class="meal-list" id="exerciseList"></div>
-      <button class="btn-add" onclick="openExerciseModal()">+ 记录运动</button>
-    </div>
-
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">今日体重</span>
-      </div>
-      <div style="padding:16px;">
-        <div class="form-row">
-          <input type="number" step="0.1" class="form-input" id="weightInput" placeholder="体重(kg)">
-          <button class="btn-primary" onclick="saveWeight()" style="margin-top:0;">记录</button>
+      <div class="hero-right">
+        <svg class="hero-ring" viewBox="0 0 100 100">
+          <circle class="hero-ring-bg" cx="50" cy="50" r="42"/>
+          <circle id="heroRingFill" class="hero-ring-fill" cx="50" cy="50" r="42" stroke-dasharray="264" stroke-dashoffset="264"/>
+        </svg>
+        <div class="hero-ring-text">
+          <div class="hero-ring-num" id="ringPercent">0%</div>
+          <div class="hero-ring-label">目标</div>
         </div>
       </div>
+    </div>
+
+    <!-- 快速入口 -->
+    <div class="glass-card quick-actions">
+      <div class="quick-item" onclick="openFoodModalWithType('breakfast')">
+        <div class="quick-icon breakfast">🍳</div>
+        <div class="quick-label">早餐</div>
+      </div>
+      <div class="quick-item" onclick="openFoodModalWithType('lunch')">
+        <div class="quick-icon lunch">🍔</div>
+        <div class="quick-label">午餐</div>
+      </div>
+      <div class="quick-item" onclick="openFoodModalWithType('dinner')">
+        <div class="quick-icon dinner">🍜</div>
+        <div class="quick-label">晚餐</div>
+      </div>
+      <div class="quick-item" onclick="openFoodModalWithType('snack')">
+        <div class="quick-icon snack">🍎</div>
+        <div class="quick-label">加餐</div>
+      </div>
+      <div class="quick-item" onclick="openExerciseModal()">
+        <div class="quick-icon exercise">🏃</div>
+        <div class="quick-label">运动</div>
+      </div>
+    </div>
+
+    <!-- 拍照条 -->
+    <div class="glass-card camera-bar" onclick="alert('拍照识别卡路里需要接入AI图像识别API，当前版本暂不支持')">
+      <span>📷</span>
+      <span>薄荷相机</span>
+    </div>
+
+    <!-- 体重记录 -->
+    <div class="glass-card record-card">
+      <div class="record-header">
+        <div class="record-title-wrap">
+          <div class="record-title">体重记录</div>
+          <div class="record-time" id="weightTime">暂无记录</div>
+        </div>
+        <div class="record-actions">
+          <div class="record-btn" onclick="openWeightModal()">＋</div>
+        </div>
+      </div>
+      <div class="record-body">
+        <div class="weight-main">
+          <span class="weight-value" id="todayWeight">--</span>
+          <span class="weight-unit">公斤</span>
+        </div>
+        <div class="weight-chart-mini" id="weightMiniChart"></div>
+      </div>
+    </div>
+
+    <!-- 运动记录 -->
+    <div class="glass-card record-card">
+      <div class="record-header">
+        <div class="record-title-wrap">
+          <div class="record-title">运动记录</div>
+          <div class="record-time" id="exerciseTime">暂无记录</div>
+        </div>
+        <div class="record-actions">
+          <div class="record-btn" onclick="openExerciseModal()">＋</div>
+        </div>
+      </div>
+      <div class="record-body">
+        <div class="exercise-stats">
+          <div class="exercise-stat">
+            <div class="exercise-stat-label">今日消耗</div>
+            <div class="exercise-stat-value"><span id="exerciseTotal">0</span><span>kcal</span></div>
+          </div>
+          <div class="exercise-stat">
+            <div class="exercise-stat-label">运动时长</div>
+            <div class="exercise-stat-value"><span id="exerciseDurationTotal">0</span><span>分钟</span></div>
+          </div>
+        </div>
+        <div class="mini-bar-chart" id="exerciseMiniChart"></div>
+      </div>
+    </div>
+
+    <!-- 喝水/睡眠 -->
+    <div class="dual-cards">
+      <div class="glass-card dual-card">
+        <div class="dual-title">喝水</div>
+        <div class="dual-value"><span id="waterValue">0</span><span>毫升</span></div>
+        <div class="dual-icon">💧</div>
+      </div>
+      <div class="glass-card dual-card">
+        <div class="dual-title">睡眠</div>
+        <div class="dual-value" id="sleepValue">--</div>
+        <div class="dual-icon">🌙</div>
+      </div>
+    </div>
+
+    <!-- 今日明细 -->
+    <div class="glass-card record-card" style="margin-top:14px;">
+      <div class="record-header">
+        <div class="record-title-wrap">
+          <div class="record-title">今日记录</div>
+          <div class="record-time">饮食 + 运动</div>
+        </div>
+      </div>
+      <div class="meal-list" id="todayList"></div>
     </div>
   </div>
 
+  <!-- 趋势页 -->
   <div id="page-trend" class="page">
-    <header class="app-header">
-      <h1>体重趋势</h1>
-    </header>
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">近30天体重变化</span>
-      </div>
-      <div class="chart-container" id="weightChart">
-        <div class="empty-state">暂无体重数据</div>
-      </div>
+    <div class="sub-header">
+      <span class="back-btn" onclick="switchPage('home')">‹</span>
+      <h1>趋势分析</h1>
+      <span style="width:30px;"></span>
     </div>
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">热量缺口趋势</span>
-      </div>
-      <div class="chart-container" id="deficitChart">
-        <div class="empty-state">暂无数据</div>
-      </div>
+    <div class="glass-card chart-card">
+      <div class="record-title" style="margin-bottom:10px;">体重变化</div>
+      <div class="chart-container" id="weightChart"><div class="empty-state">暂无体重数据</div></div>
+    </div>
+    <div class="glass-card chart-card">
+      <div class="record-title" style="margin-bottom:10px;">热量缺口</div>
+      <div class="chart-container" id="deficitChart"><div class="empty-state">暂无数据</div></div>
     </div>
   </div>
 
+  <!-- 我的页 -->
   <div id="page-profile" class="page">
-    <header class="app-header">
-      <h1>我的</h1>
-    </header>
-    <div class="section" style="margin-top:16px;">
-      <div class="section-header">
-        <span class="section-title">个人资料</span>
+    <div class="profile-header">
+      <div class="profile-avatar">🥗</div>
+      <div>
+        <div class="profile-name">瘦身记用户</div>
+        <div class="profile-meta">点击编辑个人资料</div>
       </div>
-      <div class="settings-list" id="profileList"></div>
     </div>
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">身体数据</span>
-      </div>
+
+    <div class="glass-card" style="margin:0 16px 14px;">
       <div class="settings-list">
+        <div class="settings-item" onclick="openProfileModal()">
+          <span class="settings-label">个人资料</span>
+          <span class="settings-value">身高/体重/目标 ›</span>
+        </div>
         <div class="settings-item">
           <span class="settings-label">BMI</span>
           <span class="settings-value" id="bmiValue">--</span>
         </div>
         <div class="settings-item">
           <span class="settings-label">基础代谢率</span>
-          <span class="settings-value" id="bmrValue2">-- kcal</span>
+          <span class="settings-value" id="bmrValue">-- kcal</span>
         </div>
         <div class="settings-item">
           <span class="settings-label">每日建议热量</span>
           <span class="settings-value" id="suggestValue">-- kcal</span>
         </div>
-        <div class="settings-item">
-          <span class="settings-label">目标热量</span>
-          <span class="settings-value" id="targetValue">-- kcal</span>
-        </div>
       </div>
     </div>
 
-    <!-- 饮食板块 -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">🍽️ 饮食板块</span>
-        <span class="section-total" id="customFoodCount">0 个</span>
+    <div class="glass-card" style="margin:0 16px 14px;">
+      <div class="section-pad" style="padding-bottom:10px;">
+        <div class="record-title">🍽️ 自定义食物</div>
       </div>
       <div class="meal-list" id="customFoodList"></div>
-      <button class="btn-add" onclick="openCustomFoodModal()">+ 添加自定义食物</button>
+      <div class="section-pad" style="padding-top:0;">
+        <button class="btn-add" onclick="openCustomFoodModal()">+ 添加自定义食物</button>
+      </div>
     </div>
 
-    <!-- 运动板块 -->
-    <div class="section">
-      <div class="section-header">
-        <span class="section-title">🏃 运动板块</span>
-        <span class="section-total" id="exerciseFavoriteCount">0 / 0</span>
+    <div class="glass-card" style="margin:0 16px 14px;">
+      <div class="section-pad" style="padding-bottom:10px;">
+        <div class="record-title">🏃 运动快捷选择</div>
+        <div style="font-size:12px;color:var(--text-secondary);margin-top:4px;">点击勾选要在记录中显示的运动</div>
       </div>
-      <div style="padding:0 16px 16px;font-size:13px;color:var(--text-light);">
-        点击选择要在"记录运动"里显示的快捷项，长按或点击 🗑️ 删除用不上的运动
-      </div>
-      <div id="exerciseFavoriteList" style="padding:0 16px 16px;"></div>
-      <div style="display:flex;gap:8px;padding:0 16px 16px;">
-        <button class="btn-add" style="flex:1;margin:0;" onclick="selectAllExercises(true)">全部选择</button>
-        <button class="btn-add" style="flex:1;margin:0;color:#666;border-color:#999;background:rgba(0,0,0,0.03);" onclick="selectAllExercises(false)">全部取消</button>
+      <div class="section-pad" id="exerciseFavoriteList" style="padding-top:0;"></div>
+      <div class="section-pad" style="padding-top:0;">
+        <button class="btn-add" onclick="selectAllExercises(true)">全部选择</button>
       </div>
       <div id="hiddenExerciseList" style="padding:0 16px 16px;display:none;"></div>
     </div>
+
     <button class="danger-btn" onclick="exportData()">导出数据备份</button>
     <button class="danger-btn" onclick="clearAllData()">清除所有数据</button>
   </div>
 
+  <!-- 底部导航 -->
   <nav class="bottom-nav">
     <div class="nav-item active" onclick="switchPage('home')">
-      <span class="nav-icon">🏠</span>
-      <span>首页</span>
+      <span class="nav-icon">📝</span>
+      <span>记录</span>
     </div>
     <div class="nav-item" onclick="switchPage('trend')">
-      <span class="nav-icon">📈</span>
+      <span class="nav-icon">📊</span>
       <span>趋势</span>
     </div>
+    <div style="flex:1;"></div>
     <div class="nav-item" onclick="switchPage('profile')">
       <span class="nav-icon">👤</span>
       <span>我的</span>
     </div>
   </nav>
 
-  <!-- 添加饮食弹窗 -->
+  <!-- 悬浮加号 -->
+  <div class="fab-wrap">
+    <button class="fab" onclick="openQuickAddModal()">+</button>
+  </div>
+
+  <!-- 快速添加弹窗 -->
+  <div class="modal" id="quickAddModal">
+    <div class="modal-content">
+      <div class="modal-title"><span>快速记录</span><button class="modal-close" onclick="closeModal('quickAddModal')">×</button></div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        <div class="quick-item" onclick="closeModal('quickAddModal');openFoodModalWithType('breakfast')">
+          <div class="quick-icon breakfast">🍳</div><div class="quick-label">早餐</div>
+        </div>
+        <div class="quick-item" onclick="closeModal('quickAddModal');openFoodModalWithType('lunch')">
+          <div class="quick-icon lunch">🍔</div><div class="quick-label">午餐</div>
+        </div>
+        <div class="quick-item" onclick="closeModal('quickAddModal');openFoodModalWithType('dinner')">
+          <div class="quick-icon dinner">🍜</div><div class="quick-label">晚餐</div>
+        </div>
+        <div class="quick-item" onclick="closeModal('quickAddModal');openFoodModalWithType('snack')">
+          <div class="quick-icon snack">🍎</div><div class="quick-label">加餐</div>
+        </div>
+        <div class="quick-item" onclick="closeModal('quickAddModal');openExerciseModal()">
+          <div class="quick-icon exercise">🏃</div><div class="quick-label">运动</div>
+        </div>
+        <div class="quick-item" onclick="closeModal('quickAddModal');openWeightModal()">
+          <div class="quick-icon" style="background:linear-gradient(135deg,rgba(0,122,255,0.14),rgba(0,122,255,0.06));">⚖️</div><div class="quick-label">体重</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 记录饮食弹窗 -->
   <div class="modal" id="foodModal">
     <div class="modal-content">
-      <div class="modal-title">
-        <span>添加饮食</span>
-        <button class="modal-close" onclick="closeModal('foodModal')">×</button>
-      </div>
+      <div class="modal-title"><span id="foodModalTitle">记录饮食</span><button class="modal-close" onclick="closeModal('foodModal')">×</button></div>
+      <input type="hidden" id="mealType" value="breakfast">
       <div class="form-group">
-        <label class="form-label">餐别</label>
-        <select class="form-select" id="mealType">
-          <option value="breakfast">早餐</option>
-          <option value="lunch">午餐</option>
-          <option value="dinner">晚餐</option>
-          <option value="snack">加餐</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">快捷选择（每100g/每份）</label>
+        <label class="form-label">快捷选择</label>
         <div class="food-grid" id="foodGrid"></div>
       </div>
       <div class="form-group">
@@ -786,28 +893,19 @@
         <input type="text" class="form-input" id="foodName" placeholder="如：红烧牛肉面">
       </div>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">热量 (kcal)</label>
-          <input type="number" class="form-input" id="foodCal" placeholder="0">
-        </div>
-        <div class="form-group">
-          <label class="form-label">份量 (g/份)</label>
-          <input type="number" class="form-input" id="foodAmount" placeholder="100" value="100">
-        </div>
+        <div class="form-group"><label class="form-label">热量 (kcal)</label><input type="number" class="form-input" id="foodCal" placeholder="0"></div>
+        <div class="form-group"><label class="form-label">份量 (g/份)</label><input type="number" class="form-input" id="foodAmount" placeholder="100" value="100"></div>
       </div>
       <button class="btn-primary" onclick="addFood()">添加</button>
     </div>
   </div>
 
-  <!-- 添加运动弹窗 -->
+  <!-- 记录运动弹窗 -->
   <div class="modal" id="exerciseModal">
     <div class="modal-content">
-      <div class="modal-title">
-        <span>添加运动</span>
-        <button class="modal-close" onclick="closeModal('exerciseModal')">×</button>
-      </div>
+      <div class="modal-title"><span>记录运动</span><button class="modal-close" onclick="closeModal('exerciseModal')">×</button></div>
       <div class="form-group">
-        <label class="form-label">快捷选择（每小时消耗）</label>
+        <label class="form-label">快捷选择</label>
         <div class="food-grid" id="exerciseGrid"></div>
       </div>
       <div class="form-group">
@@ -815,54 +913,46 @@
         <input type="text" class="form-input" id="exerciseName" placeholder="如：慢跑">
       </div>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">消耗热量 (kcal)</label>
-          <input type="number" class="form-input" id="exerciseCal" placeholder="0">
-        </div>
-        <div class="form-group">
-          <label class="form-label">时长 (分钟)</label>
-          <input type="number" class="form-input" id="exerciseDuration" placeholder="30" value="30">
-        </div>
+        <div class="form-group"><label class="form-label">消耗热量 (kcal)</label><input type="number" class="form-input" id="exerciseCal" placeholder="0"></div>
+        <div class="form-group"><label class="form-label">时长 (分钟)</label><input type="number" class="form-input" id="exerciseDuration" placeholder="30" value="30"></div>
       </div>
       <button class="btn-primary" onclick="addExercise()">添加</button>
     </div>
   </div>
 
-  <!-- 日历选择弹窗 -->
+  <!-- 记录体重弹窗 -->
+  <div class="modal" id="weightModal">
+    <div class="modal-content">
+      <div class="modal-title"><span>记录体重</span><button class="modal-close" onclick="closeModal('weightModal')">×</button></div>
+      <div class="form-group">
+        <label class="form-label">今日体重 (kg)</label>
+        <input type="number" step="0.1" class="form-input" id="weightInputModal" placeholder="65.0">
+      </div>
+      <button class="btn-primary" onclick="saveWeight()">保存</button>
+    </div>
+  </div>
+
+  <!-- 日历弹窗 -->
   <div class="modal" id="calendarModal">
     <div class="modal-content" style="max-height:70vh;">
-      <div class="modal-title">
-        <span>选择日期</span>
-        <button class="modal-close" onclick="closeModal('calendarModal')">×</button>
-      </div>
+      <div class="modal-title"><span>选择日期</span><button class="modal-close" onclick="closeModal('calendarModal')">×</button></div>
       <div class="calendar-header">
         <button onclick="changeCalendarMonth(-1)">‹</button>
         <span id="calendarTitle">2026年8月</span>
         <button onclick="changeCalendarMonth(1)">›</button>
       </div>
-      <div class="calendar-weekdays">
-        <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
-      </div>
+      <div class="calendar-weekdays"><span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span></div>
       <div class="calendar-days" id="calendarDays"></div>
       <button class="btn-primary" onclick="goToToday()">回到今天</button>
     </div>
   </div>
 
-  <!-- 添加自定义食物弹窗 -->
+  <!-- 自定义食物弹窗 -->
   <div class="modal" id="customFoodModal">
     <div class="modal-content">
-      <div class="modal-title">
-        <span>添加自定义食物</span>
-        <button class="modal-close" onclick="closeModal('customFoodModal')">×</button>
-      </div>
-      <div class="form-group">
-        <label class="form-label">食物名称</label>
-        <input type="text" class="form-input" id="customFoodName" placeholder="如：燕麦拿铁">
-      </div>
-      <div class="form-group">
-        <label class="form-label">热量 (kcal / 100g或每份)</label>
-        <input type="number" class="form-input" id="customFoodCal" placeholder="0">
-      </div>
+      <div class="modal-title"><span>添加自定义食物</span><button class="modal-close" onclick="closeModal('customFoodModal')">×</button></div>
+      <div class="form-group"><label class="form-label">食物名称</label><input type="text" class="form-input" id="customFoodName" placeholder="如：燕麦拿铁"></div>
+      <div class="form-group"><label class="form-label">热量 (kcal / 100g或每份)</label><input type="number" class="form-input" id="customFoodCal" placeholder="0"></div>
       <button class="btn-primary" onclick="saveCustomFood()">保存</button>
     </div>
   </div>
@@ -870,42 +960,18 @@
   <!-- 编辑资料弹窗 -->
   <div class="modal" id="profileModal">
     <div class="modal-content">
-      <div class="modal-title">
-        <span>编辑资料</span>
-        <button class="modal-close" onclick="closeModal('profileModal')">×</button>
+      <div class="modal-title"><span>编辑资料</span><button class="modal-close" onclick="closeModal('profileModal')">×</button></div>
+      <div class="form-row">
+        <div class="form-group"><label class="form-label">身高 (cm)</label><input type="number" class="form-input" id="profileHeight" placeholder="170"></div>
+        <div class="form-group"><label class="form-label">体重 (kg)</label><input type="number" step="0.1" class="form-input" id="profileWeight" placeholder="65"></div>
       </div>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">身高 (cm)</label>
-          <input type="number" class="form-input" id="profileHeight" placeholder="170">
-        </div>
-        <div class="form-group">
-          <label class="form-label">体重 (kg)</label>
-          <input type="number" step="0.1" class="form-input" id="profileWeight" placeholder="65">
-        </div>
+        <div class="form-group"><label class="form-label">年龄</label><input type="number" class="form-input" id="profileAge" placeholder="25"></div>
+        <div class="form-group"><label class="form-label">性别</label><select class="form-select" id="profileGender"><option value="male">男</option><option value="female">女</option></select></div>
       </div>
       <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">年龄</label>
-          <input type="number" class="form-input" id="profileAge" placeholder="25">
-        </div>
-        <div class="form-group">
-          <label class="form-label">性别</label>
-          <select class="form-select" id="profileGender">
-            <option value="male">男</option>
-            <option value="female">女</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label">目标体重 (kg)</label>
-          <input type="number" step="0.1" class="form-input" id="profileTargetWeight" placeholder="60">
-        </div>
-        <div class="form-group">
-          <label class="form-label">每日目标热量 (kcal)</label>
-          <input type="number" class="form-input" id="profileTargetCal" placeholder="1500">
-        </div>
+        <div class="form-group"><label class="form-label">目标体重 (kg)</label><input type="number" step="0.1" class="form-input" id="profileTargetWeight" placeholder="60"></div>
+        <div class="form-group"><label class="form-label">每日目标热量 (kcal)</label><input type="number" class="form-input" id="profileTargetCal" placeholder="1500"></div>
       </div>
       <button class="btn-primary" onclick="saveProfile()">保存</button>
     </div>
@@ -914,27 +980,6 @@
   <script>
     // ============ 数据存储 ============
     const STORAGE_KEY = 'weightLossTracker_v1';
-
-    const SYSTEM_FOODS = [
-      { name: '米饭', cal: 116 },
-      { name: '馒头', cal: 223 },
-      { name: '鸡蛋', cal: 144 },
-      { name: '牛奶', cal: 54 },
-      { name: '鸡胸肉', cal: 165 },
-      { name: '牛肉', cal: 250 },
-      { name: '猪肉', cal: 271 },
-      { name: '苹果', cal: 52 },
-      { name: '香蕉', cal: 89 },
-      { name: '西兰花', cal: 34 },
-      { name: '黄瓜', cal: 16 },
-      { name: '西红柿', cal: 18 },
-      { name: '燕麦', cal: 389 },
-      { name: '全麦面包', cal: 246 },
-      { name: '酸奶', cal: 70 },
-      { name: '可乐', cal: 43 },
-      { name: '奶茶', cal: 120 },
-      { name: '薯片', cal: 536 },
-    ];
 
     const SYSTEM_EXERCISES = [
       { name: '慢跑', cal: 500, category: '有氧' },
@@ -950,17 +995,9 @@
       { name: '爬楼梯', cal: 500, category: '日常' },
       { name: '家务', cal: 180, category: '日常' },
     ];
-
     const SYSTEM_EXERCISE_NAMES = SYSTEM_EXERCISES.map(e => e.name);
-
-
-
-    const mealLabels = {
-      breakfast: '早餐',
-      lunch: '午餐',
-      dinner: '晚餐',
-      snack: '加餐'
-    };
+    const mealLabels = { breakfast: '早餐', lunch: '午餐', dinner: '晚餐', snack: '加餐' };
+    const mealIcons = { breakfast: '🍳', lunch: '🍔', dinner: '🍜', snack: '🍎' };
 
     let state = loadData();
     let currentDate = new Date();
@@ -971,14 +1008,7 @@
         if (raw) return JSON.parse(raw);
       } catch (e) {}
       return {
-        profile: {
-          height: 170,
-          weight: 65,
-          age: 25,
-          gender: 'male',
-          targetWeight: 60,
-          targetCal: 1500
-        },
+        profile: { height: 170, weight: 65, age: 25, gender: 'male', targetWeight: 60, targetCal: 1500 },
         customFoods: [],
         customExercises: [],
         exerciseFavorites: SYSTEM_EXERCISES.map(e => e.name),
@@ -987,87 +1017,61 @@
       };
     }
 
-    function saveData() {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-    }
-
-    function getDateKey(date) {
-      return date.toISOString().split('T')[0];
-    }
-
+    function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+    function getDateKey(date) { return date.toISOString().split('T')[0]; }
     function getTodayRecord() {
       const key = getDateKey(currentDate);
-      if (!state.records[key]) {
-        state.records[key] = { meals: [], exercises: [], weight: null };
-      }
+      if (!state.records[key]) state.records[key] = { meals: [], exercises: [], weight: null, water: 0, sleep: null };
       return state.records[key];
     }
 
-    // ============ 计算逻辑 ============
     function calcBMR() {
       const p = state.profile;
       if (!p.height || !p.weight || !p.age) return 0;
-      // Mifflin-St Jeor 公式
       let bmr = 10 * p.weight + 6.25 * p.height - 5 * p.age;
       bmr += p.gender === 'male' ? 5 : -161;
       return Math.round(bmr);
     }
-
     function calcBMI() {
       const p = state.profile;
       if (!p.height || !p.weight) return 0;
       return (p.weight / ((p.height / 100) ** 2)).toFixed(1);
     }
+    function calcSuggestedCal() { return Math.round(calcBMR() * 1.2); }
 
-    function calcSuggestedCal() {
-      return Math.round(calcBMR() * 1.2);
-    }
-
-    // ============ 页面渲染 ============
     function render() {
-      const key = getDateKey(currentDate);
       const record = getTodayRecord();
       const bmr = calcBMR();
       const intake = record.meals.reduce((s, m) => s + (m.cal * m.amount / 100), 0);
       const burn = record.exercises.reduce((s, e) => s + (e.cal * e.duration / 60), 0);
-      const deficit = Math.round(intake - burn - bmr);
-      const target = state.profile.targetCal || calcSuggestedCal();
+      const target = state.profile.targetCal || calcSuggestedCal() || 1500;
+      const remain = Math.round(target - intake + burn);
       const percent = target > 0 ? Math.min(100, Math.max(0, Math.round(intake / target * 100))) : 0;
+      const totalDuration = record.exercises.reduce((s, e) => s + e.duration, 0);
 
       document.getElementById('currentDate').textContent = formatDate(currentDate);
+      document.getElementById('remainValue').textContent = remain;
       document.getElementById('intakeValue').textContent = Math.round(intake);
       document.getElementById('burnValue').textContent = Math.round(burn);
-      document.getElementById('bmrValue').textContent = bmr;
-      document.getElementById('todayWeight').textContent = record.weight || '--';
-      document.getElementById('deficitValue').textContent = Math.abs(deficit);
-      let deficitText = deficit >= 0
-        ? `今日无缺口，多摄入了 ${deficit} kcal`
-        : `今日缺口 ${Math.abs(deficit)} kcal，继续保持！`;
-      // 如果今日有记录体重，显示BMR基于今日体重
-      if (record.weight) {
-        deficitText += `<br><small style="opacity:.8">基础代谢按今日体重 ${record.weight}kg 计算</small>`;
-      }
-      document.getElementById('deficitText').innerHTML = deficitText;
+      document.getElementById('exerciseTotal').textContent = Math.round(burn);
+      document.getElementById('exerciseDurationTotal').textContent = totalDuration;
+      document.getElementById('todayWeight').textContent = record.weight ? record.weight.toFixed(2) : '--';
+      document.getElementById('weightTime').textContent = record.weight ? formatTime(currentDate) + ' 更新' : '暂无记录';
+      document.getElementById('exerciseTime').textContent = totalDuration > 0 ? formatTime(currentDate) + ' 更新' : '暂无记录';
+      document.getElementById('waterValue').textContent = (record.water || 0) * 200;
+      document.getElementById('sleepValue').textContent = record.sleep ? record.sleep + 'h' : '没有记录';
 
-      document.getElementById('deficitValue').className = deficit <= 0 ? 'positive' : 'negative';
+      document.getElementById('deficitSub').textContent = `目标 ${target} kcal · 基础代谢 ${bmr} kcal`;
 
-      const circle = document.getElementById('progressCircle');
-      const circumference = 2 * Math.PI * 50;
-      circle.style.strokeDasharray = circumference;
-      circle.style.strokeDashoffset = circumference * (1 - percent / 100);
-      document.getElementById('progressText').textContent = percent + '%';
+      const ring = document.getElementById('heroRingFill');
+      const circumference = 2 * Math.PI * 42;
+      ring.style.strokeDasharray = circumference;
+      ring.style.strokeDashoffset = circumference * (1 - percent / 100);
+      document.getElementById('ringPercent').textContent = percent + '%';
 
-      document.getElementById('mealTotal').textContent = Math.round(intake) + ' kcal';
-      document.getElementById('exerciseTotal').textContent = Math.round(burn) + ' kcal';
-
-      renderMeals(record);
-      renderExercises(record);
-      document.getElementById('weightInput').value = record.weight || '';
-
-      // 趋势页
-      renderCharts();
-
-      // 资料页
+      renderWeightMiniChart();
+      renderExerciseMiniChart();
+      renderTodayList(record);
       renderProfile();
     }
 
@@ -1076,370 +1080,98 @@
       const d = new Date(date);
       const isToday = d.toDateString() === today.toDateString();
       const isYesterday = new Date(today - 86400000).toDateString() === d.toDateString();
-      const label = isToday ? '今天' : isYesterday ? '昨天' : `${d.getMonth() + 1}月${d.getDate()}日`;
-      const week = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'][d.getDay()];
-      return `${label} ${week}`;
+      if (isToday) return '今天';
+      if (isYesterday) return '昨天';
+      return `${d.getMonth() + 1}月${d.getDate()}日`;
+    }
+    function formatTime(date) { return `${date.getHours().toString().padStart(2,'0')}:${date.getMinutes().toString().padStart(2,'0')}`; }
+
+    function renderWeightMiniChart() {
+      const container = document.getElementById('weightMiniChart');
+      const dates = [];
+      for (let i = 6; i >= 0; i--) { const d = new Date(currentDate); d.setDate(d.getDate() - i); dates.push(d); }
+      const weights = dates.map(d => state.records[getDateKey(d)]?.weight || null);
+      const valid = weights.filter(w => w !== null);
+      if (valid.length < 2) { container.innerHTML = '<div class="empty-state" style="padding:8px;font-size:12px;">记录7天以上显示趋势</div>'; return; }
+      const min = Math.min(...valid), max = Math.max(...valid), range = max - min || 1;
+      const points = weights.map((w, i) => w === null ? null : { x: (i / 6) * 100, y: 100 - ((w - min) / range) * 80 - 10 }).filter(p => p);
+      const pathD = points.map((p, i) => (i === 0 ? 'M' : 'L') + `${p.x},${p.y}`).join(' ');
+      container.innerHTML = `<svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${pathD}" fill="none" stroke="var(--primary)" stroke-width="2" stroke-linecap="round"/>${points.map(p => `<circle cx="${p.x}" cy="${p.y}" r="2.5" fill="var(--primary)"/>`).join('')}</svg>`;
     }
 
-    function renderMeals(record) {
-      const list = document.getElementById('mealList');
-      if (record.meals.length === 0) {
-        list.innerHTML = '<div class="empty-state">还没有记录饮食，点击添加</div>';
-        return;
-      }
-      list.innerHTML = record.meals.map((m, i) => `
-        <div class="meal-item">
-          <div class="meal-info">
-            <div class="meal-name">${m.name}<span class="tag ${m.type}">${mealLabels[m.type]}</span></div>
-            <div class="meal-detail">${m.amount}g / ${Math.round(m.cal)} kcal/100g</div>
-          </div>
-          <div class="meal-cal">${Math.round(m.cal * m.amount / 100)}</div>
-          <button class="btn-icon" onclick="deleteMeal(${i})">×</button>
-        </div>
-      `).join('');
+    function renderExerciseMiniChart() {
+      const container = document.getElementById('exerciseMiniChart');
+      const days = [];
+      for (let i = 6; i >= 0; i--) { const d = new Date(currentDate); d.setDate(d.getDate() - i); days.push(getDateKey(d)); }
+      const values = days.map(k => {
+        const r = state.records[k];
+        return r ? r.exercises.reduce((s, e) => s + e.duration, 0) : 0;
+      });
+      const max = Math.max(...values, 30);
+      container.innerHTML = values.map((v, i) => {
+        const h = Math.max(4, (v / max) * 100);
+        const active = v > 0 ? 'active' : '';
+        return `<div class="mini-bar ${active}" style="height:${h}%"></div>`;
+      }).join('');
     }
 
-    function renderExercises(record) {
-      const list = document.getElementById('exerciseList');
-      if (record.exercises.length === 0) {
-        list.innerHTML = '<div class="empty-state">还没有记录运动，点击添加</div>';
-        return;
-      }
-      list.innerHTML = record.exercises.map((e, i) => `
-        <div class="meal-item">
-          <div class="meal-info">
-            <div class="meal-name">${e.name}<span class="tag exercise">运动</span></div>
-            <div class="meal-detail">${e.duration}分钟 / ${Math.round(e.cal)} kcal/小时</div>
-          </div>
-          <div class="meal-cal">${Math.round(e.cal * e.duration / 60)}</div>
-          <button class="btn-icon" onclick="deleteExercise(${i})">×</button>
-        </div>
-      `).join('');
+    function renderTodayList(record) {
+      const list = document.getElementById('todayList');
+      const items = [];
+      record.meals.forEach((m, i) => items.push({ type: 'meal', i, ...m }));
+      record.exercises.forEach((e, i) => items.push({ type: 'exercise', i, ...e }));
+      if (items.length === 0) { list.innerHTML = '<div class="empty-state">今天还没有记录</div>'; return; }
+      list.innerHTML = items.map(item => {
+        if (item.type === 'meal') {
+          return `<div class="meal-item"><div class="meal-info"><div class="meal-name">${mealIcons[item.mealType] || '🍽️'} ${item.name}<span class="tag ${item.mealType}">${mealLabels[item.mealType]}</span></div><div class="meal-detail">${item.amount}g · ${Math.round(item.cal)} kcal/100g</div></div><div class="meal-cal">${Math.round(item.cal * item.amount / 100)}</div><button class="btn-icon" onclick="deleteMeal(${item.i})">×</button></div>`;
+        } else {
+          return `<div class="meal-item"><div class="meal-info"><div class="meal-name">🏃 ${item.name}<span class="tag exercise">运动</span></div><div class="meal-detail">${item.duration}分钟 · ${Math.round(item.cal)} kcal/h</div></div><div class="meal-cal">${Math.round(item.cal * item.duration / 60)}</div><button class="btn-icon" onclick="deleteExercise(${item.i})">×</button></div>`;
+        }
+      }).join('');
     }
 
     function renderProfile() {
-      const p = state.profile;
-      const list = document.getElementById('profileList');
-      list.innerHTML = `
-        <div class="settings-item" onclick="openProfileModal()">
-          <span class="settings-label">身高</span>
-          <span class="settings-value">${p.height || '--'} cm ›</span>
-        </div>
-        <div class="settings-item" onclick="openProfileModal()">
-          <span class="settings-label">当前体重</span>
-          <span class="settings-value">${p.weight || '--'} kg ›</span>
-        </div>
-        <div class="settings-item" onclick="openProfileModal()">
-          <span class="settings-label">年龄</span>
-          <span class="settings-value">${p.age || '--'} 岁 ›</span>
-        </div>
-        <div class="settings-item" onclick="openProfileModal()">
-          <span class="settings-label">性别</span>
-          <span class="settings-value">${p.gender === 'male' ? '男' : '女'} ›</span>
-        </div>
-        <div class="settings-item" onclick="openProfileModal()">
-          <span class="settings-label">目标体重</span>
-          <span class="settings-value">${p.targetWeight || '--'} kg ›</span>
-        </div>
-        <div class="settings-item" onclick="openProfileModal()">
-          <span class="settings-label">每日目标热量</span>
-          <span class="settings-value">${p.targetCal || '--'} kcal ›</span>
-        </div>
-      `;
       document.getElementById('bmiValue').textContent = calcBMI() || '--';
-      document.getElementById('bmrValue2').textContent = (calcBMR() || '--') + ' kcal';
+      document.getElementById('bmrValue').textContent = (calcBMR() || '--') + ' kcal';
       document.getElementById('suggestValue').textContent = (calcSuggestedCal() || '--') + ' kcal';
-      document.getElementById('targetValue').textContent = (p.targetCal || calcSuggestedCal() || '--') + ' kcal';
 
-      // 自定义食物库
       const customFoods = state.customFoods || [];
-      document.getElementById('customFoodCount').textContent = customFoods.length + ' 个';
       const foodList = document.getElementById('customFoodList');
-      if (customFoods.length === 0) {
-        foodList.innerHTML = '<div class="empty-state">还没有自定义食物</div>';
-      } else {
-        foodList.innerHTML = customFoods.map((f, i) => `
-          <div class="meal-item">
-            <div class="meal-info">
-              <div class="meal-name">${f.name}</div>
-              <div class="meal-detail">${f.cal} kcal / 100g或每份</div>
-            </div>
-            <button class="btn-icon" onclick="deleteCustomFood(${i})">×</button>
-          </div>
-        `).join('');
-      }
+      foodList.innerHTML = customFoods.length === 0 ? '<div class="empty-state">还没有自定义食物</div>' : customFoods.map((f, i) => `<div class="meal-item"><div class="meal-info"><div class="meal-name">${f.name}</div><div class="meal-detail">${f.cal} kcal / 100g或每份</div></div><button class="btn-icon" onclick="deleteCustomFood(${i})">×</button></div>`).join('');
 
-      // 运动快捷选择 - 按分类分组网格展示
       const favs = state.exerciseFavorites || [];
       const hidden = state.hiddenSystemExercises || [];
       const visibleSystem = SYSTEM_EXERCISES.filter(e => !hidden.includes(e.name));
       const visibleCustom = (state.customExercises || []).filter(e => !hidden.includes(e.name));
       const visibleExercises = [...visibleSystem, ...visibleCustom];
       const hiddenExercises = [...SYSTEM_EXERCISES.filter(e => hidden.includes(e.name)), ...(state.customExercises || []).filter(e => hidden.includes(e.name))];
-      const allExercises = [...SYSTEM_EXERCISES, ...(state.customExercises || [])];
       const favList = document.getElementById('exerciseFavoriteList');
-
-      // 统计
-      document.getElementById('exerciseFavoriteCount').textContent = `${favs.filter(n => !hidden.includes(n)).length} / ${visibleExercises.length}`;
-
-      // 按分类分组
       const groups = {};
-      visibleExercises.forEach(e => {
-        const cat = e.category || '自定义';
-        if (!groups[cat]) groups[cat] = [];
-        groups[cat].push(e);
-      });
-
+      visibleExercises.forEach(e => { const cat = e.category || '自定义'; if (!groups[cat]) groups[cat] = []; groups[cat].push(e); });
       let html = '';
       Object.keys(groups).forEach(cat => {
-        html += `<div class="exercise-category-title">${cat}</div>`;
-        html += `<div class="exercise-favorite-grid">`;
+        html += `<div class="exercise-category-title">${cat}</div><div class="exercise-favorite-grid">`;
         html += groups[cat].map(e => {
           const checked = favs.includes(e.name);
           const isCustom = !SYSTEM_EXERCISES.find(s => s.name === e.name);
-          return `
-            <div class="exercise-favorite-chip ${checked ? 'selected' : ''}">
-              <div class="exercise-favorite-delete" onclick="event.stopPropagation();deleteExerciseItem('${e.name}', ${isCustom})">🗑</div>
-              <div onclick="toggleExerciseFavorite('${e.name}')">
-                <div class="exercise-favorite-name">${e.name}</div>
-                <div class="exercise-favorite-cal">${e.cal} kcal/h</div>
-                ${isCustom ? '<div class="exercise-favorite-tag">自定义</div>' : ''}
-                <div class="exercise-favorite-check">${checked ? '✓' : ''}</div>
-              </div>
-            </div>
-          `;
+          return `<div class="exercise-favorite-chip ${checked ? 'selected' : ''}"><div class="exercise-favorite-delete" onclick="event.stopPropagation();deleteExerciseItem('${e.name}', ${isCustom})">🗑</div><div onclick="toggleExerciseFavorite('${e.name}')"><div class="exercise-favorite-name">${e.name}</div><div class="exercise-favorite-cal">${e.cal} kcal/h</div><div class="exercise-favorite-check">${checked ? '✓' : ''}</div></div></div>`;
         }).join('');
-        html += `</div>`;
+        html += '</div>';
       });
-      favList.innerHTML = html || '<div class="empty-state">暂无运动选项，可在下方隐藏区恢复</div>';
+      favList.innerHTML = html || '<div class="empty-state">暂无运动选项</div>';
 
-      // 已隐藏/已删除区
       const hiddenList = document.getElementById('hiddenExerciseList');
       if (hiddenExercises.length > 0) {
         hiddenList.style.display = 'block';
-        hiddenList.innerHTML = `
-          <div class="hidden-exercise-section">
-            <div class="hidden-exercise-title">已隐藏的运动（点击恢复）</div>
-            <div class="hidden-exercise-grid">
-              ${hiddenExercises.map(e => `
-                <div class="hidden-exercise-chip" onclick="restoreExerciseItem('${e.name}')">
-                  <div class="name">${e.name}</div>
-                  <div class="restore">点击恢复</div>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        `;
-      } else {
-        hiddenList.style.display = 'none';
-        hiddenList.innerHTML = '';
-      }
+        hiddenList.innerHTML = `<div class="hidden-exercise-section"><div class="hidden-exercise-title">已隐藏的运动（点击恢复）</div><div class="hidden-exercise-grid">${hiddenExercises.map(e => `<div class="hidden-exercise-chip" onclick="restoreExerciseItem('${e.name}')"><div class="name">${e.name}</div><div class="restore" style="font-size:11px;color:var(--primary);margin-top:4px;">点击恢复</div></div>`).join('')}</div></div>`;
+      } else { hiddenList.style.display = 'none'; hiddenList.innerHTML = ''; }
     }
 
-    function openCustomFoodModal() {
-      document.getElementById('customFoodName').value = '';
-      document.getElementById('customFoodCal').value = '';
-      openModal('customFoodModal');
-    }
+    function openQuickAddModal() { openModal('quickAddModal'); }
 
-    function saveCustomFood() {
-      const name = document.getElementById('customFoodName').value.trim();
-      const cal = parseFloat(document.getElementById('customFoodCal').value);
-      if (!name || !cal) return alert('请填写完整信息');
-      if (!state.customFoods) state.customFoods = [];
-      const existing = state.customFoods.findIndex(f => f.name === name);
-      if (existing >= 0) {
-        state.customFoods[existing] = { name, cal };
-      } else {
-        state.customFoods.push({ name, cal });
-      }
-      saveData();
-      closeModal('customFoodModal');
-      renderProfile();
-    }
-
-    function deleteCustomFood(i) {
-      if (confirm('确定删除这个自定义食物？')) {
-        state.customFoods.splice(i, 1);
-        saveData();
-        renderProfile();
-      }
-    }
-
-    function toggleExerciseFavorite(name) {
-      if (!state.exerciseFavorites) state.exerciseFavorites = [];
-      const idx = state.exerciseFavorites.indexOf(name);
-      if (idx >= 0) {
-        state.exerciseFavorites.splice(idx, 1);
-      } else {
-        state.exerciseFavorites.push(name);
-      }
-      saveData();
-      renderProfile();
-    }
-
-    function selectAllExercises(select) {
-      const hidden = state.hiddenSystemExercises || [];
-      const visibleExercises = [...SYSTEM_EXERCISES.filter(e => !hidden.includes(e.name)), ...(state.customExercises || []).filter(e => !hidden.includes(e.name))];
-      state.exerciseFavorites = select ? visibleExercises.map(e => e.name) : [];
-      saveData();
-      renderProfile();
-    }
-
-    function deleteExerciseItem(name, isCustom) {
-      const isSystem = SYSTEM_EXERCISE_NAMES.includes(name);
-      if (isCustom || isSystem) {
-        if (!confirm(`确定要${isCustom ? '删除' : '隐藏'}「${name}」吗？`)) return;
-        // 从收藏中移除
-        const favIdx = state.exerciseFavorites.indexOf(name);
-        if (favIdx >= 0) state.exerciseFavorites.splice(favIdx, 1);
-
-        if (isCustom) {
-          // 彻底删除自定义运动
-          state.customExercises = (state.customExercises || []).filter(e => e.name !== name);
-        } else {
-          // 系统运动加入隐藏列表
-          if (!state.hiddenSystemExercises) state.hiddenSystemExercises = [];
-          if (!state.hiddenSystemExercises.includes(name)) state.hiddenSystemExercises.push(name);
-        }
-        saveData();
-        renderProfile();
-      }
-    }
-
-    function restoreExerciseItem(name) {
-      // 恢复系统运动：从隐藏列表移除
-      if (state.hiddenSystemExercises) {
-        state.hiddenSystemExercises = state.hiddenSystemExercises.filter(n => n !== name);
-      }
-      // 默认恢复时加到收藏
-      if (!state.exerciseFavorites.includes(name)) state.exerciseFavorites.push(name);
-      saveData();
-      renderProfile();
-    }
-
-    // ============ 图表 ============
-    function renderCharts() {
-      const dates = [];
-      for (let i = 29; i >= 0; i--) {
-        const d = new Date();
-        d.setDate(d.getDate() - i);
-        dates.push(d);
-      }
-      const keys = dates.map(getDateKey);
-
-      const weights = keys.map(k => state.records[k]?.weight || null);
-      renderLineChart('weightChart', dates, weights, '体重 (kg)', '#4CAF50');
-
-      const deficits = keys.map(k => {
-        const r = state.records[k];
-        if (!r) return null;
-        const bmr = calcBMR();
-        const intake = r.meals.reduce((s, m) => s + (m.cal * m.amount / 100), 0);
-        const burn = r.exercises.reduce((s, e) => s + (e.cal * e.duration / 60), 0);
-        return Math.round(intake - burn - bmr);
-      });
-      renderLineChart('deficitChart', dates, deficits, '热量缺口 (kcal)', '#FF5722');
-    }
-
-    function renderLineChart(containerId, dates, values, label, color) {
-      const container = document.getElementById(containerId);
-      const valid = values.filter(v => v !== null);
-      if (valid.length === 0) {
-        container.innerHTML = '<div class="empty-state">暂无数据</div>';
-        return;
-      }
-      const min = Math.min(...valid);
-      const max = Math.max(...valid);
-      const range = max - min || 1;
-      const w = container.clientWidth || 300;
-      const h = 220;
-      const pad = { top: 30, right: 20, bottom: 30, left: 40 };
-      const cw = w - pad.left - pad.right;
-      const ch = h - pad.top - pad.bottom;
-
-      const points = values.map((v, i) => {
-        if (v === null) return null;
-        const x = pad.left + (i / (dates.length - 1)) * cw;
-        const y = pad.top + ch - ((v - min) / range) * ch;
-        return { x, y, v, d: dates[i] };
-      }).filter(p => p);
-
-      const pathD = points.map((p, i) => (i === 0 ? 'M' : 'L') + `${p.x},${p.y}`).join(' ');
-
-      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-      svg.setAttribute('class', 'chart-svg');
-      svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
-
-      // grid
-      for (let i = 0; i <= 4; i++) {
-        const y = pad.top + (ch * i / 4);
-        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-        line.setAttribute('x1', pad.left);
-        line.setAttribute('y1', y);
-        line.setAttribute('x2', w - pad.right);
-        line.setAttribute('y2', y);
-        line.setAttribute('stroke', '#eee');
-        svg.appendChild(line);
-        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        text.setAttribute('x', pad.left - 8);
-        text.setAttribute('y', y + 4);
-        text.setAttribute('text-anchor', 'end');
-        text.setAttribute('font-size', '10');
-        text.setAttribute('fill', '#999');
-        text.textContent = Math.round(max - range * i / 4);
-        svg.appendChild(text);
-      }
-
-      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-      path.setAttribute('d', pathD);
-      path.setAttribute('fill', 'none');
-      path.setAttribute('stroke', color);
-      path.setAttribute('stroke-width', '2');
-      svg.appendChild(path);
-
-      points.forEach(p => {
-        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circle.setAttribute('cx', p.x);
-        circle.setAttribute('cy', p.y);
-        circle.setAttribute('r', 4);
-        circle.setAttribute('fill', color);
-        circle.setAttribute('stroke', '#fff');
-        circle.setAttribute('stroke-width', '2');
-        svg.appendChild(circle);
-      });
-
-      container.innerHTML = '';
-      container.appendChild(svg);
-    }
-
-    // ============ 交互 ============
-    function changeDate(delta) {
-      currentDate.setDate(currentDate.getDate() + delta);
-      render();
-    }
-
-    function switchPage(name) {
-      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.getElementById('page-' + name).classList.add('active');
-      event.currentTarget.classList.add('active');
-      if (name === 'trend') renderCharts();
-      if (name === 'profile') renderProfile();
-    }
-
-    function openModal(id) {
-      document.getElementById(id).classList.add('show');
-    }
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('show');
-    }
-
-    function getFoodGridItems() {
-      return state.customFoods && state.customFoods.length > 0 ? state.customFoods : [];
-    }
-
-    function openFoodModal() {
+    function openFoodModalWithType(type) {
+      document.getElementById('mealType').value = type;
+      document.getElementById('foodModalTitle').textContent = '记录' + mealLabels[type];
       renderFoodGrid();
       document.getElementById('foodName').value = '';
       document.getElementById('foodCal').value = '';
@@ -1447,25 +1179,18 @@
       openModal('foodModal');
     }
 
+    function openFoodModal() { openFoodModalWithType('breakfast'); }
+
     function renderFoodGrid() {
       const grid = document.getElementById('foodGrid');
-      const items = getFoodGridItems();
+      const items = state.customFoods || [];
       if (items.length === 0) {
-        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#999;font-size:13px;padding:10px;">暂无自定义食物，请填写下方信息添加，或到"我的"页面管理</div>';
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-secondary);font-size:13px;padding:10px;">暂无自定义食物，填写下方添加</div>';
         return;
       }
-      grid.innerHTML = items.map((f, i) => `
-        <div class="food-chip" onclick="selectFood(${i})">
-          ${f.name}<span class="cal">${f.cal} kcal</span>
-        </div>
-      `).join('');
+      grid.innerHTML = items.map((f, i) => `<div class="food-chip" onclick="selectFood(${i})">${f.name}<span class="cal">${f.cal} kcal</span></div>`).join('');
     }
-
-    function selectFood(index) {
-      const f = state.customFoods[index];
-      document.getElementById('foodName').value = f.name;
-      document.getElementById('foodCal').value = f.cal;
-    }
+    function selectFood(index) { const f = state.customFoods[index]; document.getElementById('foodName').value = f.name; document.getElementById('foodCal').value = f.cal; }
 
     function addFood() {
       const name = document.getElementById('foodName').value.trim();
@@ -1473,40 +1198,13 @@
       const amount = parseFloat(document.getElementById('foodAmount').value);
       const type = document.getElementById('mealType').value;
       if (!name || !cal || !amount) return alert('请填写完整信息');
-      // 自动保存为自定义食物（如果同名则更新）
       const existing = state.customFoods.findIndex(f => f.name === name);
-      if (existing >= 0) {
-        state.customFoods[existing] = { name, cal };
-      } else {
-        state.customFoods.push({ name, cal });
-      }
-      getTodayRecord().meals.push({ name, cal, amount, type });
-      saveData();
-      closeModal('foodModal');
-      render();
+      if (existing >= 0) state.customFoods[existing] = { name, cal }; else state.customFoods.push({ name, cal });
+      getTodayRecord().meals.push({ name, cal, amount, mealType: type });
+      saveData(); closeModal('foodModal'); render();
     }
 
-    function deleteMeal(i) {
-      if (confirm('确定删除这条记录？')) {
-        getTodayRecord().meals.splice(i, 1);
-        saveData();
-        render();
-      }
-    }
-
-    function getExerciseGridItems() {
-      const favorites = state.exerciseFavorites || [];
-      const hidden = state.hiddenSystemExercises || [];
-      const items = [];
-      SYSTEM_EXERCISES.forEach(e => {
-        if (favorites.includes(e.name) && !hidden.includes(e.name)) items.push(e);
-      });
-      // 自定义运动如果不在系统列表里，也加上
-      (state.customExercises || []).forEach(e => {
-        if (favorites.includes(e.name) && !items.find(i => i.name === e.name)) items.push(e);
-      });
-      return items;
-    }
+    function deleteMeal(i) { if (confirm('确定删除这条记录？')) { getTodayRecord().meals.splice(i, 1); saveData(); render(); } }
 
     function openExerciseModal() {
       renderExerciseGrid();
@@ -1515,25 +1213,24 @@
       document.getElementById('exerciseDuration').value = 30;
       openModal('exerciseModal');
     }
-
     function renderExerciseGrid() {
       const grid = document.getElementById('exerciseGrid');
-      const items = getExerciseGridItems();
-      if (items.length === 0) {
-        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#999;font-size:13px;padding:10px;">暂无快捷运动，请到"我的"页面选择常用运动</div>';
-        return;
-      }
-      grid.innerHTML = items.map((e, i) => `
-        <div class="food-chip" onclick="selectExercise(${i})">
-          ${e.name}<span class="cal">${e.cal} kcal/h</span>
-        </div>
-      `).join('');
+      const favs = state.exerciseFavorites || [];
+      const hidden = state.hiddenSystemExercises || [];
+      const items = [];
+      SYSTEM_EXERCISES.forEach(e => { if (favs.includes(e.name) && !hidden.includes(e.name)) items.push(e); });
+      (state.customExercises || []).forEach(e => { if (favs.includes(e.name) && !items.find(i => i.name === e.name)) items.push(e); });
+      if (items.length === 0) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--text-secondary);font-size:13px;padding:10px;">请到"我的"页面选择常用运动</div>'; return; }
+      grid.innerHTML = items.map((e, i) => `<div class="food-chip" onclick="selectExercise(${i})">${e.name}<span class="cal">${e.cal} kcal/h</span></div>`).join('');
     }
-
-    function selectExercise(index) {
-      const e = getExerciseGridItems()[index];
-      document.getElementById('exerciseName').value = e.name;
-      document.getElementById('exerciseCal').value = e.cal;
+    function selectExercise(index) { const e = renderExerciseItems()[index]; document.getElementById('exerciseName').value = e.name; document.getElementById('exerciseCal').value = e.cal; }
+    function renderExerciseItems() {
+      const favs = state.exerciseFavorites || [];
+      const hidden = state.hiddenSystemExercises || [];
+      const items = [];
+      SYSTEM_EXERCISES.forEach(e => { if (favs.includes(e.name) && !hidden.includes(e.name)) items.push(e); });
+      (state.customExercises || []).forEach(e => { if (favs.includes(e.name) && !items.find(i => i.name === e.name)) items.push(e); });
+      return items;
     }
 
     function addExercise() {
@@ -1541,38 +1238,65 @@
       const cal = parseFloat(document.getElementById('exerciseCal').value);
       const duration = parseFloat(document.getElementById('exerciseDuration').value);
       if (!name || !cal || !duration) return alert('请填写完整信息');
-      // 自动保存为自定义运动（如果同名且不在系统中则更新）
       const systemIdx = SYSTEM_EXERCISES.findIndex(e => e.name === name);
       if (systemIdx < 0) {
         if (!state.customExercises) state.customExercises = [];
         const existing = state.customExercises.findIndex(e => e.name === name);
-        if (existing >= 0) {
-          state.customExercises[existing] = { name, cal };
-        } else {
-          state.customExercises.push({ name, cal });
-        }
+        if (existing >= 0) state.customExercises[existing] = { name, cal }; else state.customExercises.push({ name, cal });
       }
       getTodayRecord().exercises.push({ name, cal, duration });
-      saveData();
-      closeModal('exerciseModal');
-      render();
+      saveData(); closeModal('exerciseModal'); render();
     }
+    function deleteExercise(i) { if (confirm('确定删除这条记录？')) { getTodayRecord().exercises.splice(i, 1); saveData(); render(); } }
 
-    function deleteExercise(i) {
-      if (confirm('确定删除这条记录？')) {
-        getTodayRecord().exercises.splice(i, 1);
-        saveData();
-        render();
-      }
-    }
-
+    function openWeightModal() { document.getElementById('weightInputModal').value = getTodayRecord().weight || ''; openModal('weightModal'); }
     function saveWeight() {
-      const w = parseFloat(document.getElementById('weightInput').value);
+      const w = parseFloat(document.getElementById('weightInputModal').value);
       if (!w) return;
       getTodayRecord().weight = w;
       state.profile.weight = w;
       saveData();
+      closeModal('weightModal');
       render();
+    }
+
+    function openCustomFoodModal() { document.getElementById('customFoodName').value = ''; document.getElementById('customFoodCal').value = ''; openModal('customFoodModal'); }
+    function saveCustomFood() {
+      const name = document.getElementById('customFoodName').value.trim();
+      const cal = parseFloat(document.getElementById('customFoodCal').value);
+      if (!name || !cal) return alert('请填写完整信息');
+      if (!state.customFoods) state.customFoods = [];
+      const existing = state.customFoods.findIndex(f => f.name === name);
+      if (existing >= 0) state.customFoods[existing] = { name, cal }; else state.customFoods.push({ name, cal });
+      saveData(); closeModal('customFoodModal'); renderProfile();
+    }
+    function deleteCustomFood(i) { if (confirm('确定删除这个自定义食物？')) { state.customFoods.splice(i, 1); saveData(); renderProfile(); } }
+
+    function toggleExerciseFavorite(name) {
+      if (!state.exerciseFavorites) state.exerciseFavorites = [];
+      const idx = state.exerciseFavorites.indexOf(name);
+      if (idx >= 0) state.exerciseFavorites.splice(idx, 1); else state.exerciseFavorites.push(name);
+      saveData(); renderProfile();
+    }
+    function selectAllExercises(select) {
+      const hidden = state.hiddenSystemExercises || [];
+      const visibleExercises = [...SYSTEM_EXERCISES.filter(e => !hidden.includes(e.name)), ...(state.customExercises || []).filter(e => !hidden.includes(e.name))];
+      state.exerciseFavorites = select ? visibleExercises.map(e => e.name) : [];
+      saveData(); renderProfile();
+    }
+    function deleteExerciseItem(name, isCustom) {
+      const isSystem = SYSTEM_EXERCISE_NAMES.includes(name);
+      if (!confirm(`确定要${isCustom ? '删除' : '隐藏'}「${name}」吗？`)) return;
+      const favIdx = state.exerciseFavorites.indexOf(name);
+      if (favIdx >= 0) state.exerciseFavorites.splice(favIdx, 1);
+      if (isCustom) state.customExercises = (state.customExercises || []).filter(e => e.name !== name);
+      else { if (!state.hiddenSystemExercises) state.hiddenSystemExercises = []; if (!state.hiddenSystemExercises.includes(name)) state.hiddenSystemExercises.push(name); }
+      saveData(); renderProfile();
+    }
+    function restoreExerciseItem(name) {
+      if (state.hiddenSystemExercises) state.hiddenSystemExercises = state.hiddenSystemExercises.filter(n => n !== name);
+      if (!state.exerciseFavorites.includes(name)) state.exerciseFavorites.push(name);
+      saveData(); renderProfile();
     }
 
     function openProfileModal() {
@@ -1585,7 +1309,6 @@
       document.getElementById('profileTargetCal').value = p.targetCal || '';
       openModal('profileModal');
     }
-
     function saveProfile() {
       state.profile.height = parseFloat(document.getElementById('profileHeight').value);
       state.profile.weight = parseFloat(document.getElementById('profileWeight').value);
@@ -1593,95 +1316,105 @@
       state.profile.gender = document.getElementById('profileGender').value;
       state.profile.targetWeight = parseFloat(document.getElementById('profileTargetWeight').value);
       state.profile.targetCal = parseFloat(document.getElementById('profileTargetCal').value);
-      saveData();
-      closeModal('profileModal');
-      render();
+      saveData(); closeModal('profileModal'); render();
     }
 
     function exportData() {
       const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = '瘦身记备份_' + getDateKey(new Date()) + '.json';
-      a.click();
-      URL.revokeObjectURL(url);
+      const a = document.createElement('a'); a.href = url; a.download = '瘦身记备份_' + getDateKey(new Date()) + '.json'; a.click(); URL.revokeObjectURL(url);
     }
+    function clearAllData() { if (confirm('确定清除所有数据？此操作不可恢复！')) { localStorage.removeItem(STORAGE_KEY); state = loadData(); render(); } }
 
-    function clearAllData() {
-      if (confirm('确定清除所有数据？此操作不可恢复！')) {
-        localStorage.removeItem(STORAGE_KEY);
-        state = loadData();
-        render();
-      }
-    }
-
-    // ============ 日历选择 ============
+    // 日历
     let calendarViewDate = new Date();
-
-    function openCalendarModal() {
-      calendarViewDate = new Date(currentDate);
-      renderCalendar();
-      openModal('calendarModal');
-    }
-
-    function changeCalendarMonth(delta) {
-      calendarViewDate.setMonth(calendarViewDate.getMonth() + delta);
-      renderCalendar();
-    }
-
+    function openCalendarModal() { calendarViewDate = new Date(currentDate); renderCalendar(); openModal('calendarModal'); }
+    function changeCalendarMonth(delta) { calendarViewDate.setMonth(calendarViewDate.getMonth() + delta); renderCalendar(); }
     function renderCalendar() {
-      const year = calendarViewDate.getFullYear();
-      const month = calendarViewDate.getMonth();
+      const year = calendarViewDate.getFullYear(), month = calendarViewDate.getMonth();
       document.getElementById('calendarTitle').textContent = `${year}年${month + 1}月`;
-
       const firstDay = new Date(year, month, 1).getDay();
       const daysInMonth = new Date(year, month + 1, 0).getDate();
-      const todayKey = getDateKey(new Date());
-      const selectedKey = getDateKey(currentDate);
-
+      const todayKey = getDateKey(new Date()), selectedKey = getDateKey(currentDate);
       let html = '';
-      for (let i = 0; i < firstDay; i++) {
-        html += '<span class="calendar-day empty"></span>';
-      }
+      for (let i = 0; i < firstDay; i++) html += '<span class="calendar-day empty"></span>';
       for (let d = 1; d <= daysInMonth; d++) {
         const date = new Date(year, month, d);
         const key = getDateKey(date);
         const record = state.records[key];
         const hasData = record && (record.meals.length || record.exercises.length || record.weight);
-        const isToday = key === todayKey;
-        const isSelected = key === selectedKey;
         let cls = 'calendar-day';
-        if (isToday) cls += ' today';
-        if (isSelected) cls += ' selected';
+        if (key === todayKey) cls += ' today';
+        if (key === selectedKey) cls += ' selected';
         if (hasData) cls += ' has-data';
         html += `<span class="${cls}" onclick="selectCalendarDate('${key}')">${d}${hasData ? '<i class="data-dot"></i>' : ''}</span>`;
       }
       document.getElementById('calendarDays').innerHTML = html;
     }
+    function selectCalendarDate(key) { currentDate = new Date(key + 'T00:00:00'); closeModal('calendarModal'); render(); }
+    function goToToday() { currentDate = new Date(); calendarViewDate = new Date(); renderCalendar(); closeModal('calendarModal'); render(); }
 
-    function selectCalendarDate(key) {
-      currentDate = new Date(key + 'T00:00:00');
-      closeModal('calendarModal');
-      render();
+    // 页面切换
+    function switchPage(name) {
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+      document.getElementById('page-' + name).classList.add('active');
+      if (event && event.currentTarget) event.currentTarget.classList.add('active');
+      if (name === 'trend') renderTrendCharts();
+      if (name === 'profile') renderProfile();
     }
 
-    function goToToday() {
-      currentDate = new Date();
-      calendarViewDate = new Date();
-      renderCalendar();
-      closeModal('calendarModal');
-      render();
-    }
-
-    // 点击遮罩关闭弹窗
-    document.querySelectorAll('.modal').forEach(m => {
-      m.addEventListener('click', e => {
-        if (e.target === m) m.classList.remove('show');
+    function renderTrendCharts() {
+      const dates = [];
+      for (let i = 29; i >= 0; i--) { const d = new Date(); d.setDate(d.getDate() - i); dates.push(d); }
+      const keys = dates.map(getDateKey);
+      const weights = keys.map(k => state.records[k]?.weight || null);
+      renderLineChart('weightChart', dates, weights, '#34C759');
+      const deficits = keys.map(k => {
+        const r = state.records[k];
+        if (!r) return null;
+        const bmr = calcBMR();
+        const intake = r.meals.reduce((s, m) => s + (m.cal * m.amount / 100), 0);
+        const burn = r.exercises.reduce((s, e) => s + (e.cal * e.duration / 60), 0);
+        return Math.round(intake - burn - bmr);
       });
+      renderLineChart('deficitChart', dates, deficits, '#FF9500');
+    }
+
+    function renderLineChart(containerId, dates, values, color) {
+      const container = document.getElementById(containerId);
+      const valid = values.filter(v => v !== null);
+      if (valid.length === 0) { container.innerHTML = '<div class="empty-state">暂无数据</div>'; return; }
+      const min = Math.min(...valid), max = Math.max(...valid), range = max - min || 1;
+      const w = container.clientWidth || 300, h = 200;
+      const pad = { top: 25, right: 15, bottom: 25, left: 35 };
+      const cw = w - pad.left - pad.right, ch = h - pad.top - pad.bottom;
+      const points = values.map((v, i) => v === null ? null : { x: pad.left + (i / (dates.length - 1)) * cw, y: pad.top + ch - ((v - min) / range) * ch }).filter(p => p);
+      const pathD = points.map((p, i) => (i === 0 ? 'M' : 'L') + `${p.x},${p.y}`).join(' ');
+      const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      svg.setAttribute('class', 'chart-svg'); svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+      for (let i = 0; i <= 4; i++) {
+        const y = pad.top + (ch * i / 4);
+        const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        line.setAttribute('x1', pad.left); line.setAttribute('y1', y); line.setAttribute('x2', w - pad.right); line.setAttribute('y2', y); line.setAttribute('stroke', 'rgba(120,120,128,0.1)');
+        svg.appendChild(line);
+        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        text.setAttribute('x', pad.left - 6); text.setAttribute('y', y + 4); text.setAttribute('text-anchor', 'end'); text.setAttribute('font-size', '9'); text.setAttribute('fill', '#8E8E93');
+        text.textContent = Math.round(max - range * i / 4); svg.appendChild(text);
+      }
+      const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      path.setAttribute('d', pathD); path.setAttribute('fill', 'none'); path.setAttribute('stroke', color); path.setAttribute('stroke-width', '2.5'); path.setAttribute('stroke-linecap', 'round'); svg.appendChild(path);
+      points.forEach(p => { const c = document.createElementNS('http://www.w3.org/2000/svg', 'circle'); c.setAttribute('cx', p.x); c.setAttribute('cy', p.y); c.setAttribute('r', 3.5); c.setAttribute('fill', color); c.setAttribute('stroke', '#fff'); c.setAttribute('stroke-width', '2'); svg.appendChild(c); });
+      container.innerHTML = ''; container.appendChild(svg);
+    }
+
+    function openModal(id) { document.getElementById(id).classList.add('show'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+    document.querySelectorAll('.modal').forEach(m => {
+      m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); });
     });
 
-    // 初始化
     render();
   </script>
 </body>
