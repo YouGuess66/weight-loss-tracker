@@ -610,9 +610,35 @@
     .calendar-day .data-dot { width: 4px; height: 4px; border-radius: 50%; background: currentColor; margin-top: 3px; }
 
     .empty-state { text-align: center; padding: 24px; color: var(--text-secondary); font-size: 14px; }
+
+    /* 同步状态指示 */
+    .sync-indicator {
+      position: fixed;
+      top: calc(8px + env(safe-area-inset-top));
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(10px);
+      padding: 6px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      color: var(--text-secondary);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+      z-index: 200;
+      display: none;
+      gap: 6px;
+      align-items: center;
+    }
+    .sync-indicator.show { display: flex; }
+    .sync-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-tertiary); }
+    .sync-indicator.syncing .sync-dot { background: var(--warn); animation: pulse 1.2s infinite; }
+    .sync-indicator.synced .sync-dot { background: var(--primary); }
+    .sync-indicator.error .sync-dot { background: var(--danger); }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
   </style>
 </head>
 <body>
+  <div id="syncIndicator" class="sync-indicator"><div class="sync-dot"></div><span class="sync-text">同步中</span></div>
   <!-- 首页 -->
   <div id="page-home" class="page active">
     <header class="app-header">
@@ -980,6 +1006,96 @@
   <script>
     // ============ 数据存储 ============
     const STORAGE_KEY = 'weightLossTracker_v1';
+    const DEVICE_ID_KEY = 'weightLossTracker_deviceId';
+
+    // Supabase 配置
+    const SUPABASE_URL = 'https://vccddgnzfmcijwdvfweqqo.supabase.co';
+    const SUPABASE_KEY = 'sb_publishable_vuaH-w0bj7z1F3d5DsHDpg_j2FakA7E';
+
+    // 获取或生成设备 ID
+    function getDeviceId() {
+      let id = localStorage.getItem(DEVICE_ID_KEY);
+      if (!id) {
+        id = 'dev_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 9);
+        localStorage.setItem(DEVICE_ID_KEY, id);
+      }
+      return id;
+    }
+    const DEVICE_ID = getDeviceId();
+
+    // 同步状态控制
+    let syncState = 'idle';
+    function setSyncState(state, text) {
+      syncState = state;
+      const ind = document.getElementById('syncIndicator');
+      if (!ind) return;
+      ind.className = 'sync-indicator show ' + state;
+      ind.querySelector('.sync-text').textContent = text || state;
+      if (state === 'synced') setTimeout(() => ind.classList.remove('show'), 1500);
+    }
+
+    // 从云端拉取数据
+    async function fetchFromCloud() {
+      try {
+        setSyncState('syncing', '同步中');
+        const res = await fetch(SUPABASE_URL + '/rest/v1/user_data?device_id=eq.' + DEVICE_ID, {
+          headers: {
+            'apikey': SUPABASE_KEY,
+            'Authorization': 'Bearer ' + SUPABASE_KEY
+          }
+        });
+        if (!res.ok) throw new Error('fetch failed');
+        const rows = await res.json();
+        if (rows.length > 0 && rows[0].data) {
+          setSyncState('synced', '已同步');
+          return rows[0].data;
+        }
+        setSyncState('synced', '就绪');
+        return null;
+      } catch (e) {
+        console.warn('云端拉取失败:', e);
+        setSyncState('error', '离线');
+        return null;
+      }
+    }
+
+    // 推送数据到云端
+    let syncTimer = null;
+    function pushToCloud() {
+      if (syncTimer) clearTimeout(syncTimer);
+      syncTimer = setTimeout(async () => {
+        try {
+          setSyncState('syncing', '同步中');
+          const res = await fetch(SUPABASE_URL + '/rest/v1/user_data', {
+            method: 'POST',
+            headers: {
+              'apikey': SUPABASE_KEY,
+              'Authorization': 'Bearer ' + SUPABASE_KEY,
+              'Content-Type': 'application/json',
+              'Prefer': 'resolution=merge-duplicates'
+            },
+            body: JSON.stringify({
+              device_id: DEVICE_ID,
+              data: state,
+              updated_at: new Date().toISOString()
+            })
+          });
+          if (!res.ok) throw new Error('push failed');
+          setSyncState('synced', '已同步');
+        } catch (e) {
+          console.warn('云端同步失败:', e);
+          setSyncState('error', '同步失败');
+        }
+      }, 500);
+    }
+
+    // 重写保存函数：本地 + 云端
+    function saveData() {
+      state._updatedAt = new Date().toISOString();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      localStorage.setItem(STORAGE_KEY + '_time', Date.now().toString());
+      pushToCloud();
+    }
 
     const SYSTEM_EXERCISES = [
       { name: '慢跑', cal: 500, category: '有氧' },
@@ -999,14 +1115,10 @@
     const mealLabels = { breakfast: '早餐', lunch: '午餐', dinner: '晚餐', snack: '加餐' };
     const mealIcons = { breakfast: '🍳', lunch: '🍔', dinner: '🍜', snack: '🍎' };
 
-    let state = loadData();
+    let state = loadLocal();
     let currentDate = new Date();
 
-    function loadData() {
-      try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) return JSON.parse(raw);
-      } catch (e) {}
+    function getDefaultState() {
       return {
         profile: { height: 170, weight: 65, age: 25, gender: 'male', targetWeight: 60, targetCal: 1500 },
         customFoods: [],
@@ -1015,6 +1127,31 @@
         hiddenSystemExercises: [],
         records: {}
       };
+    }
+
+    function loadLocal() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return getDefaultState();
+    }
+
+    // 异步初始化：先读本地，再同步云端
+    async function init() {
+      render();
+      // 后台拉取云端数据
+      const cloudData = await fetchFromCloud();
+      if (cloudData) {
+        // 比较时间戳，云端优先
+        const cloudTime = cloudData._updatedAt ? new Date(cloudData._updatedAt).getTime() : 0;
+        const localTime = (() => { try { return localStorage.getItem(STORAGE_KEY + '_time') ? parseInt(localStorage.getItem(STORAGE_KEY + '_time')) : 0; } catch { return 0; } })();
+        if (cloudTime >= localTime) {
+          state = cloudData;
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          render();
+        }
+      }
     }
 
     function saveData() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
@@ -1415,7 +1552,7 @@
       m.addEventListener('click', e => { if (e.target === m) m.classList.remove('show'); });
     });
 
-    render();
+    init();
   </script>
 </body>
 </html>
